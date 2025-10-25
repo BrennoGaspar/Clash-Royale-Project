@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class CartaData {
 
     // variaveis
-    private final String ARQUIVO_PATH = "/src/main/java/br.edu.ifsp/data/carta.csv";
+    private final String ARQUIVO_PATH = "src/main/java/br/edu/ifsp/data/carta.csv";
     private ArrayList<Carta> cartas = new ArrayList<>();
 
     // construtor padrao
@@ -16,7 +16,7 @@ public class CartaData {
         carregarDados();
     }
 
-    // metodos especificos para salvar os dados das Cartas
+    // metodos especificos para o CRUD os dados das Cartas
     public void carregarDados(){
 
         File arquivo = new File( ARQUIVO_PATH );
@@ -56,8 +56,8 @@ public class CartaData {
             int vida = Integer.parseInt(campos[8]);
             Alvo alvo = Alvo.valueOf( campos[9].toUpperCase() );
             int alcance = Integer.parseInt(campos[10]);
-            String velocidade = campos[11];
-            String velocidadeDeImpacto = campos[12];
+            double velocidade = Double.parseDouble(campos[11]);
+            double velocidadeDeImpacto = Double.parseDouble(campos[12]);
 
             return new Carta( nome, nivel, custoElixir, tipo, raridade, caminhoImagem, dano, danoPorSegundo, vida, alvo, alcance, velocidade, velocidadeDeImpacto );
         } catch (Exception e) {
@@ -97,13 +97,13 @@ public class CartaData {
                 String.valueOf( carta.getVida() ),
                 String.valueOf( carta.getAlvo() ),
                 String.valueOf( carta.getAlcance() ),
-                carta.getVelocidade(),
-                carta.getVelocidadeDeImpacto()
+                String.valueOf( carta.getVelocidade() ),
+                String.valueOf( carta.getVelocidadeDeImpacto() )
         );
     }
 
     // metodo para criar a carta e salvar no arquivo
-    public boolean criarCarta( Carta novaCarta ) {
+    public boolean criarCarta(Carta novaCarta) {
 
         if( cartas.contains(novaCarta) ) {
             System.out.println( "Carta já existe!" );

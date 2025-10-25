@@ -16,11 +16,11 @@ public class Carta {
     private int vida;
     private Alvo alvo;
     private int alcance;
-    private String velocidade;
-    private String velocidadeDeImpacto;
+    private double velocidade;
+    private double velocidadeDeImpacto;
 
     // construtor nao padrao
-    public Carta(String nome, int nivel, double custoElixir, Tipo tipo, Raridade raridade, String caminhoImagem, int dano, int danoPorSegundo, int vida, Alvo alvo, int alcance, String velocidade, String velocidadeDeImpacto) {
+    public Carta(String nome, int nivel, double custoElixir, Tipo tipo, Raridade raridade, String caminhoImagem, int dano, int danoPorSegundo, int vida, Alvo alvo, int alcance, double velocidade, double velocidadeDeImpacto) {
         this.nome = nome;
         this.nivel = nivel;
         this.custoElixir = custoElixir;
@@ -81,11 +81,11 @@ public class Carta {
         return alcance;
     }
 
-    public String getVelocidade() {
+    public double getVelocidade() {
         return velocidade;
     }
 
-    public String getVelocidadeDeImpacto() {
+    public double getVelocidadeDeImpacto() {
         return velocidadeDeImpacto;
     }
 
@@ -146,11 +146,11 @@ public class Carta {
         this.alcance = alcance;
     }
 
-    public void setVelocidade(String velocidade) {
+    public void setVelocidade(double velocidade) {
         this.velocidade = velocidade;
     }
 
-    public void setVelocidadeDeImpacto(String velocidadeDeImpacto) {
+    public void setVelocidadeDeImpacto(double velocidadeDeImpacto) {
         this.velocidadeDeImpacto = velocidadeDeImpacto;
     }
 

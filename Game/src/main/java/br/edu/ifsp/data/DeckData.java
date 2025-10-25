@@ -10,13 +10,18 @@ import java.util.Scanner;
 
 public class DeckData {
 
-    private final String ARQUIVO_PATH = "/src/main/java/br.edu.ifsp/data/deck.csv";
+    // variaveis
+    private final String ARQUIVO_PATH = "src/main/java/br/edu/ifsp/data/deck.csv";
     private ArrayList<Deck> decks = new ArrayList<>();
+    private CartaData cartaDAO;
 
-    public DeckData(){
+    // construtor nao padrao
+    public DeckData(CartaData cartaDAO) {
+        this.cartaDAO = cartaDAO;
         carregarDados();
     }
 
+    // metodos especificos para o CRUD os dados dos Decks
     public void carregarDados(){
 
         File arquivo = new File( ARQUIVO_PATH );
@@ -80,7 +85,7 @@ public class DeckData {
         ArrayList<String> campos = new ArrayList<>();
 
         for( Carta carta : deck.getCartas() ) {
-            campos.add(carta.getNome());
+            campos.add( carta.getNome() );
         }
 
         while( campos.size() < 8 ){
