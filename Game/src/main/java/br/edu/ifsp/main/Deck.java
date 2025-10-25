@@ -1,5 +1,6 @@
 package br.edu.ifsp.main;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Deck {
@@ -8,7 +9,9 @@ public class Deck {
     private ArrayList<Carta> cartas = new ArrayList<>();
 
     // construtor padrao (vazio)
-    public Deck(){}
+    public Deck( ArrayList<Carta> cartas ){
+        this.cartas = cartas;
+    }
 
     // metodo getter
     public double getCustoMedio() {
@@ -23,25 +26,8 @@ public class Deck {
         }
     }
 
-    // metodos especificos de um deck
-    public void adicionarCarta ( Carta carta ){
-
-        if( cartas.size() < 8 ){
-            if( !cartas.contains(carta) ){
-                cartas.add(carta);
-            }
-        }
-
-    }
-
-    public void removerCarta ( Carta carta ){
-
-        if( cartas.contains(carta) ){
-            cartas.remove(carta);
-        } else {
-            System.out.println( "O deck nao contem essa carta!" );
-        }
-
+    public ArrayList<Carta> getCartas() {
+        return this.cartas;
     }
 
 }

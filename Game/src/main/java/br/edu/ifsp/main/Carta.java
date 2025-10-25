@@ -10,7 +10,7 @@ public class Carta {
     private double custoElixir;
     private Tipo tipo;
     private Raridade raridade;
-    private File imagem;
+    private String caminhoImagem;
     private int dano;
     private int danoPorSegundo;
     private int vida;
@@ -20,13 +20,13 @@ public class Carta {
     private String velocidadeDeImpacto;
 
     // construtor nao padrao
-    public Carta(String nome, int nivel, double custoElixir, Tipo tipo, Raridade raridade, File imagem, int dano, int danoPorSegundo, int vida, Alvo alvo, int alcance, String velocidade, String velocidadeDeImpacto) {
+    public Carta(String nome, int nivel, double custoElixir, Tipo tipo, Raridade raridade, String caminhoImagem, int dano, int danoPorSegundo, int vida, Alvo alvo, int alcance, String velocidade, String velocidadeDeImpacto) {
         this.nome = nome;
         this.nivel = nivel;
         this.custoElixir = custoElixir;
         this.tipo = tipo;
         this.raridade = raridade;
-        this.imagem = imagem;
+        this.caminhoImagem = caminhoImagem;
         this.dano = dano;
         this.danoPorSegundo = danoPorSegundo;
         this.vida = vida;
@@ -57,8 +57,8 @@ public class Carta {
         return raridade;
     }
 
-    public File getImagem() {
-        return imagem;
+    public String getCaminhoImagem() {
+        return caminhoImagem;
     }
 
     public int getDano() {
@@ -122,8 +122,8 @@ public class Carta {
         this.raridade = raridade;
     }
 
-    public void setImagem(File imagem) {
-        this.imagem = imagem;
+    public void setCaminhoImagem(String caminhoImagem) {
+        this.caminhoImagem = caminhoImagem;
     }
 
     public void setDano(int dano) {
