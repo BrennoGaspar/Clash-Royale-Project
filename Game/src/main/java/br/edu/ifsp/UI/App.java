@@ -20,7 +20,6 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
 
-
         HBox container = new HBox();
 
         Label txt = new Label( "TESTE" );
@@ -34,10 +33,6 @@ public class App extends Application {
         stage.setScene( cena );
         stage.setTitle( ":: Clash Royale ::" );
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 
 }

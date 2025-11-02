@@ -102,6 +102,23 @@ public class CartaData {
         );
     }
 
+    public Carta buscarCartaPorNome( String nome ) {
+
+        if (nome == null || nome.trim().isEmpty()) {
+            return null;
+        }
+
+        String nomeBusca = nome.trim().toLowerCase();
+        for (Carta carta : cartas) {
+            if (carta.getNome().toLowerCase().equals(nomeBusca)) {
+                return carta;
+            }
+        }
+
+        return null;
+
+    }
+
     // metodo para criar a carta e salvar no arquivo
     public boolean criarCarta(Carta novaCarta) {
 

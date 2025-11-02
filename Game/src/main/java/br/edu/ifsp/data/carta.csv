@@ -1,3 +1,5 @@
 Nome,Nivel,CustoElixir,Tipo,Raridade,CaminhoImagem,Dano,DPS,Vida,Alvo,Alcance,Velocidade,VelocidadeImpacto
 Gigante,9,5.0,TROPA,RARA,caminho/falso/img.png,200,100,3000,TERRESTRE,1,10.0,10.0
 Mini P.E.K.K.A.,10,4.0,TROPA,RARA,caminho/falso/img.png,400,200,800,TERRESTRE,1,12.0,12.0
+Mago,10,4.0,TROPA,RARA,caminho/falso/img.png,400,200,800,TERRESTRE,1,12.0,12.0
+P.E.K.K.A.,10,4.0,TROPA,RARA,caminho/falso/img.png,400,200,800,TERRESTRE,1,12.0,12.0

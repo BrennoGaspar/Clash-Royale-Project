@@ -8,7 +8,7 @@ import java.util.Set;
 public class Deck {
 
     // atributos específicos de um deck
-    private ArrayList<Carta> cartas = new ArrayList<>();
+    private ArrayList<Carta> cartas;
 
     // construtor padrao (vazio)
     public Deck( ArrayList<Carta> cartas ) {
@@ -24,9 +24,11 @@ public class Deck {
 
         for( int i = 0; i < cartas.size(); i++ ){
             for( int j = i+1; j < cartas.size(); j++ ){
+
                 if( cartas.get(i).equals( cartas.get(j) )){
                     throw new IllegalArgumentException("Um deck não pode conter cartas repetidas.");
                 }
+
             }
         }
 

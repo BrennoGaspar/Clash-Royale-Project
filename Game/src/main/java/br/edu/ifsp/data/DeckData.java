@@ -21,6 +21,10 @@ public class DeckData {
         carregarDados();
     }
 
+    public DeckData() {
+        carregarDados();
+    }
+
     // metodos especificos para o CRUD os dados dos Decks
     public void carregarDados(){
 
@@ -46,21 +50,27 @@ public class DeckData {
 
     private Deck converterLinhaDeck( String linha ){
 
-        String[] cartas = linha.split(",");
+        String[] nomesDasCartas = linha.split( "," );
 
         ArrayList<Carta> cartasDoDeck = new ArrayList<>();
 
-        if (cartas.length < 8) {
-            System.err.println("Linha CSV de Deck inválida (campos insuficientes): " + linha);
+        if( this.cartaDAO != null ){
+            for( String nomeCarta : nomesDasCartas ){
+
+                Carta cartaEncontrada = this.cartaDAO.buscarCartaPorNome(nomeCarta.trim());
+
+                if( cartaEncontrada != null ){
+                    cartasDoDeck.add(cartaEncontrada);
+                } else {
+                    System.err.println("Carta não encontrada no banco: " + nomeCarta);
+                }
+            }
+        } else {
+            System.err.println("Impossível carregar decks: cartaDAO é null.");
             return null;
         }
 
-        try{
-            return new Deck( cartasDoDeck );
-        } catch (Exception e) {
-            System.err.println( "Erro ao criar deck: " + e.getMessage() );
-            return null;
-        }
+        return new Deck( cartasDoDeck );
 
     }
 
