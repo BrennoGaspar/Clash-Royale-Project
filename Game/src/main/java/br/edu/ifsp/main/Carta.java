@@ -1,7 +1,5 @@
 package br.edu.ifsp.main;
 
-import java.io.File;
-
 public class Carta {
 
     // atributos específicos de uma carta

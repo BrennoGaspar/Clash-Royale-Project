@@ -11,8 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.Node; // Importe Node
-
+import javafx.scene.Node;
 import java.util.ArrayList;
 
 public class Colecao extends Application {
