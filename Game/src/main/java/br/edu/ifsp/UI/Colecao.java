@@ -61,7 +61,8 @@ public class Colecao extends Application {
         // FIM CONTAINER
         container.getChildren().addAll( header, body );
 
-        Scene cena = new Scene( container, 1820, 980 );
+        Scene cena = new Scene( container, 1820, 700
+        );
 
         stage.setScene( cena );
         stage.setTitle( ":: Colecao ::" );

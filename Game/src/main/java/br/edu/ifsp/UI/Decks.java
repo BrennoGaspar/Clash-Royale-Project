@@ -74,7 +74,7 @@ public class Decks {
         // FIM CONTAINER
         container.getChildren().addAll( header, body );
 
-        Scene cena = new Scene( container, 1820, 980 );
+        Scene cena = new Scene( container, 1820, 700 );
 
         this.stage = new Stage();
         this.stage.setScene( cena );
