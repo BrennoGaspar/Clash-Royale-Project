@@ -76,6 +76,9 @@ public class Decks {
 
 <<<<<<< HEAD
         Scene cena = new Scene( container, 1500, 700 );
+=======
+        Scene cena = new Scene( container, 1820, 700 );
+>>>>>>> 035def1c2490c27c023c97e34987e8968ec34268
 
         this.stage = new Stage();
         this.stage.setScene( cena );
