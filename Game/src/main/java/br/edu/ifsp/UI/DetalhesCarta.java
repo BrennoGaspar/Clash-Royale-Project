@@ -1,11 +1,13 @@
 package br.edu.ifsp.UI;
 
+import br.edu.ifsp.data.CartaData;
 import br.edu.ifsp.main.Carta;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,11 +19,13 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.security.cert.CertificateRevokedException;
 
 public class DetalhesCarta {
 
     private Stage stage;
     private Carta carta;
+    private CartaData CartaDAO;
 
     public DetalhesCarta(Carta carta) {
         this.carta = carta;
@@ -90,11 +94,15 @@ public class DetalhesCarta {
         grid.add( new Label("Velocidade de Impacto:"), 0, row );
         grid.add( new Label(String.valueOf(carta.getVelocidadeDeImpacto())), 1, row );
 
+        Button remove = new Button( "Excluir " + carta.getNome() );
+        remove.setAlignment( Pos.BOTTOM_CENTER );
+        remove.setOnAction( e -> removerCarta( carta ) );
+
         Button close = new Button( "Fechar" );
         close.setAlignment( Pos.BOTTOM_CENTER );
         close.setOnAction( this::fecharDetalhes );
 
-        container.getChildren().addAll( imageContainer, grid, close );
+        container.getChildren().addAll( imageContainer, grid, remove, close );
 
         Scene cena = new Scene( container, 400, 500 );
         this.stage.setScene( cena );
@@ -102,8 +110,26 @@ public class DetalhesCarta {
     }
 
     private void fecharDetalhes( ActionEvent actionEvent ){
+        this.stage.close();
+    }
 
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+    private void removerCarta( Carta c ){
+
+        try{
+            CartaDAO = new CartaData();
+            CartaDAO.excluirCarta( c );
+            Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
+            alerta.setTitle( carta.getNome() + " removida!" );
+            alerta.setContentText( "A carta " + carta.getNome() + " foi removida com sucesso da coleção!" );
+            alerta.showAndWait();
+            this.stage.close();
+        } catch ( Exception e ){
+            Alert alerta = new Alert( Alert.AlertType.ERROR );
+            alerta.setTitle( "ERRO!" );
+            alerta.setContentText( "Erro >> " + e );
+            alerta.showAndWait();
+            System.err.println( "Erro encontrado ao remover carta >> " + e );
+        }
 
     }
 

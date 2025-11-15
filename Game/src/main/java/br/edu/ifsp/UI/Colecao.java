@@ -23,6 +23,7 @@ public class Colecao extends Application {
 
     CartaData cartaDAO = new CartaData();
     private ArrayList<Carta> cartas;
+    private Stage stage;
 
     public Stage createStage(Stage stage) {
 
@@ -84,9 +85,10 @@ public class Colecao extends Application {
 
         Scene cena = new Scene( container, 1500, 700 );
 
-        stage.setScene( cena );
-        stage.setTitle( ":: Colecao ::" );
-        return stage;
+        this.stage = new Stage();
+        this.stage.setScene( cena );
+        this.stage.setTitle( ":: Decks ::" );
+        return this.stage;
 
     }
 
@@ -100,7 +102,7 @@ public class Colecao extends Application {
         Decks novaJanela = new Decks( cartaDAO );
         novaJanela.exibir();
 
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        this.stage.close();
 
     }
 
@@ -109,7 +111,7 @@ public class Colecao extends Application {
         Cartas novaJanela = new Cartas(  );
         novaJanela.exibir();
 
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        this.stage.close();
 
     }
 

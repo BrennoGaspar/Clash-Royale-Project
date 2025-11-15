@@ -95,7 +95,7 @@ public class Decks {
             Stage novoStage = colecao.createStage( new Stage() );
             novoStage.show();
 
-            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+            this.stage.close();
 
     }
 
@@ -104,7 +104,7 @@ public class Decks {
         Cartas novaJanela = new Cartas(  );
         novaJanela.exibir();
 
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        this.stage.close();
 
     }
 
