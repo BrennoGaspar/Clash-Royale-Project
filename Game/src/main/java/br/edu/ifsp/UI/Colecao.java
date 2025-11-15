@@ -30,12 +30,14 @@ public class Colecao extends Application {
         VBox container = new VBox();
 
         // HEADER
-        HBox header = new HBox( 600 );
+        HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
         decks.setOnAction( this::funcaoBotao );
+        Button criarCarta = new Button( "Criar Carta" );
+        criarCarta.setOnAction( this::funcaoBotaoCriarCarta );
         Button colecao = new Button( "Colecao" );
 
-        header.getChildren().addAll( decks, colecao );
+        header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
 
         // BODY
@@ -76,6 +78,15 @@ public class Colecao extends Application {
     private void funcaoBotao(ActionEvent actionEvent) {
 
         Decks novaJanela = new Decks( cartaDAO );
+        novaJanela.exibir();
+
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
+    }
+
+    private void funcaoBotaoCriarCarta(ActionEvent actionEvent) {
+
+        Cartas novaJanela = new Cartas(  );
         novaJanela.exibir();
 
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();

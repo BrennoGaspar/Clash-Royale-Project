@@ -37,12 +37,14 @@ public class Decks {
         VBox container = new VBox();
 
         // HEADER
-        HBox header = new HBox( 600 );
+        HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
+        Button criarCarta = new Button( "Criar Carta" );
+        criarCarta.setOnAction( this::funcaoBotaoCriarCarta );
         Button colecao = new Button( "Colecao" );
         colecao.setOnAction( this::voltarParaColecao );
 
-        header.getChildren().addAll( decks, colecao );
+        header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
 
         // BODY
@@ -96,4 +98,14 @@ public class Decks {
             ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
 
     }
+
+    private void funcaoBotaoCriarCarta(ActionEvent actionEvent) {
+
+        Cartas novaJanela = new Cartas(  );
+        novaJanela.exibir();
+
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
+    }
+
 }
