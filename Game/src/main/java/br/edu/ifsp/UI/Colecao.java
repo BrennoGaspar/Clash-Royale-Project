@@ -59,10 +59,7 @@ public class Colecao extends Application {
                 nome.setStyle( "-fx-padding: 0 10 0 30;" );
                 Label custoElixir = new Label( String.format( "%.1f", c.getCustoElixir() ) );
                 Button btnDetalhes = new Button( "Detalhes" );
-                btnDetalhes.setOnAction( e -> {
-                    DetalhesCarta detalhesView = new DetalhesCarta(c);
-                    detalhesView.exibir();
-                });
+                btnDetalhes.setOnAction( e -> exibirDetalhesCarta(c) );
                 String caminho = c.getCaminhoImagem();
                 try{
                     Image imagemCarta = new Image( new FileInputStream(caminho) );
@@ -113,6 +110,13 @@ public class Colecao extends Application {
         novaJanela.exibir();
 
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
+    }
+
+    private void exibirDetalhesCarta( Carta c ){
+
+        DetalhesCarta detalhesView = new DetalhesCarta( c );
+        detalhesView.exibir();
 
     }
 
