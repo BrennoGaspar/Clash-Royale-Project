@@ -10,9 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Cartas {
@@ -82,10 +84,29 @@ public class Cartas {
         raridadeField.setPromptText("Selecione a Raridade");
         grid.add(raridadeField, 1, 4);
 
-        grid.add(new Label("Caminho Imagem:"), 0, 5);
+        grid.add(new Label("Arquivo Imagem:"), 0, 5);
+        HBox fileSelectorBox = new HBox( 5 );
         caminhoImagemField = new TextField();
         caminhoImagemField.setPromptText("Caminho/URL da imagem");
-        grid.add(caminhoImagemField, 1, 5);
+        caminhoImagemField.setEditable( false );
+        Button selectImage = new Button( "Selecionar" );
+        selectImage.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Selecionar Imagem da Carta");
+
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Arquivos de Imagem", "*.png", "*.jpg", "*.jpeg"),
+                    new FileChooser.ExtensionFilter("Todos os Arquivos", "*.*")
+            );
+
+            File selectedFile = fileChooser.showOpenDialog(this.stage);
+
+            if (selectedFile != null) {
+                caminhoImagemField.setText(selectedFile.getAbsolutePath());
+            }
+        });
+        fileSelectorBox.getChildren().addAll( caminhoImagemField, selectImage );
+        grid.add( fileSelectorBox, 1, 5 );
 
         grid.add(new Label("Dano:"), 0, 6);
         danoField = new TextField();

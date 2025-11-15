@@ -8,10 +8,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Colecao extends Application {
@@ -27,7 +32,7 @@ public class Colecao extends Application {
         }
 
         // CONTAINER
-        VBox container = new VBox();
+        VBox container = new VBox( 20 );
 
         // HEADER
         HBox header = new HBox( 300 );
@@ -44,19 +49,32 @@ public class Colecao extends Application {
         VBox body = new VBox();
 
         // CARD
-        HBox card = new HBox();
+        VBox cardList = new VBox( 30 );
+        cardList.setAlignment( Pos.TOP_CENTER );
         if (this.cartas != null) {
             for( Carta c : this.cartas ){
+                HBox card = new HBox( 15 );
+                card.setAlignment( Pos.CENTER );
                 Label nome = new Label( c.getNome() );
                 nome.setStyle( "-fx-padding: 0 10 0 30;" );
                 Label custoElixir = new Label( String.format( "%.1f", c.getCustoElixir() ) );
-                card.getChildren().addAll( nome, custoElixir );
+                String caminho = c.getCaminhoImagem();
+                try{
+                    Image imagemCarta = new Image( new FileInputStream(caminho) );
+                    ImageView viewImagem = new ImageView(imagemCarta);
+                    viewImagem.setFitHeight( 50 );
+                    viewImagem.setFitWidth( 50 );
+                    card.getChildren().addAll( nome, viewImagem, custoElixir );
+                } catch ( FileNotFoundException e ){
+                    System.err.println( "Erro >> Arquivo de imagem nao encontrado em: " + caminho );
+                    card.getChildren().add( new Label( "Foto não encontrada!" ) );
+                }
+                cardList.getChildren().add( card );
             }
         }
-        card.setAlignment( Pos.CENTER );
 
         // FIM BODY
-        body.getChildren().addAll( card );
+        body.getChildren().addAll( cardList );
         body.setAlignment( Pos.CENTER );
 
         // FIM CONTAINER
