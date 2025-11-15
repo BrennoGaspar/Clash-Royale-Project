@@ -1,9 +1,12 @@
 package br.edu.ifsp.UI;
 
 import br.edu.ifsp.main.Carta;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -87,10 +90,20 @@ public class DetalhesCarta {
         grid.add( new Label("Velocidade de Impacto:"), 0, row );
         grid.add( new Label(String.valueOf(carta.getVelocidadeDeImpacto())), 1, row );
 
-        container.getChildren().addAll( imageContainer, grid );
+        Button close = new Button( "Fechar" );
+        close.setAlignment( Pos.BOTTOM_CENTER );
+        close.setOnAction( this::fecharDetalhes );
+
+        container.getChildren().addAll( imageContainer, grid, close );
 
         Scene cena = new Scene( container, 400, 500 );
         this.stage.setScene( cena );
+
+    }
+
+    private void fecharDetalhes( ActionEvent actionEvent ){
+
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
 
     }
 
