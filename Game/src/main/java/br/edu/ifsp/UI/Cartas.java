@@ -200,6 +200,7 @@ public class Cartas {
             cartaDAO.criarCarta( c );
             Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
             alerta.setTitle( "Carta criada com sucesso!" );
+            alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
             alerta.showAndWait();
 
             ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
