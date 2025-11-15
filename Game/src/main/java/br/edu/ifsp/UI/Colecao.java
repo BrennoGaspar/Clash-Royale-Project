@@ -58,13 +58,18 @@ public class Colecao extends Application {
                 Label nome = new Label( c.getNome() );
                 nome.setStyle( "-fx-padding: 0 10 0 30;" );
                 Label custoElixir = new Label( String.format( "%.1f", c.getCustoElixir() ) );
+                Button btnDetalhes = new Button( "Detalhes" );
+                btnDetalhes.setOnAction( e -> {
+                    DetalhesCarta detalhesView = new DetalhesCarta(c);
+                    detalhesView.exibir();
+                });
                 String caminho = c.getCaminhoImagem();
                 try{
                     Image imagemCarta = new Image( new FileInputStream(caminho) );
                     ImageView viewImagem = new ImageView(imagemCarta);
                     viewImagem.setFitHeight( 50 );
                     viewImagem.setFitWidth( 50 );
-                    card.getChildren().addAll( nome, viewImagem, custoElixir );
+                    card.getChildren().addAll( nome, viewImagem, custoElixir, btnDetalhes );
                 } catch ( FileNotFoundException e ){
                     System.err.println( "Erro >> Arquivo de imagem nao encontrado em: " + caminho );
                     card.getChildren().add( new Label( "Foto não encontrada!" ) );
