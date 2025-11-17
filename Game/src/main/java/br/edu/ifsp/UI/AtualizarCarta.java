@@ -49,6 +49,7 @@ public class AtualizarCarta {
 
         grid.add(new Label("Nome:"), 0, 0);
         nomeField = new TextField();
+        nomeField.setEditable( false );
         grid.add(nomeField, 1, 0);
 
         grid.add(new Label("Nível:"), 0, 1);
