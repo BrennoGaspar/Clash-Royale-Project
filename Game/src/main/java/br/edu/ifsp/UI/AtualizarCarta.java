@@ -1,7 +1,6 @@
 package br.edu.ifsp.UI;
 
 import br.edu.ifsp.data.CartaData;
-import br.edu.ifsp.data.DeckData;
 import br.edu.ifsp.main.*;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -12,15 +11,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 import java.io.File;
-import java.util.ArrayList;
 
-public class Cartas {
+public class AtualizarCarta {
 
     private Stage stage;
-    CartaData cartaDAO = new CartaData();
+    private Carta cartaOriginal;
     // VARIAVEIS "GLOBAIS"
     TextField nomeField;
     TextField nivelField;
@@ -36,21 +33,11 @@ public class Cartas {
     TextField velocidadeField;
     TextField velocidadeDeImpactoField;
 
-    public Cartas() {
+    public AtualizarCarta( Carta c, CartaData dataAntiga ) {
+        this.cartaOriginal = c;
 
         // CONTAINER
         VBox container = new VBox();
-
-        // HEADER
-        HBox header = new HBox( 300 );
-        Button decks = new Button( "Decks" );
-        decks.setOnAction( this::funcaoBotao );
-        Button criarCarta = new Button( "Criar Carta" );
-        Button colecao = new Button( "Colecao" );
-        colecao.setOnAction( this::voltarParaColecao );
-
-        header.getChildren().addAll( decks, criarCarta, colecao );
-        header.setAlignment( Pos.TOP_CENTER );
 
         // BODY
         VBox body = new VBox();
@@ -138,33 +125,25 @@ public class Cartas {
         velocidadeDeImpactoField = new TextField();
         grid.add(velocidadeDeImpactoField, 1, 12);
 
-        // --- 3. BOTÃO DE AÇÃO ---
-        Button btnCadastrar = new Button("Cadastrar Carta");
-        btnCadastrar.setOnAction( this::botaoAdicionar );
-        btnCadastrar.setMaxWidth(Double.MAX_VALUE);
+        this.preencherCampos( c );
+
+        Button btnAtualizar = new Button("Atualizar Carta");
+        btnAtualizar.setOnAction( e -> botaoEditar( c, dataAntiga ) );
+        btnAtualizar.setMaxWidth(Double.MAX_VALUE);
 
         // Colocado na coluna 1, na próxima linha
-        grid.add( btnCadastrar, 1, 13 );
+        grid.add(btnAtualizar, 1, 13 );
 
         body.getChildren().add( grid );
 
-        // DECK
-        HBox deck = new HBox( 50 );
-        deck.setAlignment( Pos.CENTER );
-
-        // FIM BODY
-        body.getChildren().addAll( deck );
-        body.setAlignment( Pos.CENTER );
-
-
         // FIM CONTAINER
-        container.getChildren().addAll( header, body );
+        container.getChildren().addAll( body );
 
-        Scene cena = new Scene( container, 1500, 700 );
+        Scene cena = new Scene( container, 400, 500 );
 
         this.stage = new Stage();
         this.stage.setScene( cena );
-        this.stage.setTitle( ":: Criar Nova Carta ::" );
+        this.stage.setTitle( ":: Atualizar Carta ::" );
 
     }
 
@@ -172,42 +151,38 @@ public class Cartas {
         this.stage.show();
     }
 
-    private void funcaoBotao(ActionEvent actionEvent) {
-
-        Decks novaJanela = new Decks( cartaDAO );
-        novaJanela.exibir();
-
-        this.stage.close();
-
+    private void preencherCampos( Carta c ) {
+        nomeField.setText(c.getNome());
+        nivelField.setText(String.valueOf(c.getNivel()));
+        custoElixirField.setText(String.format("%.2f", c.getCustoElixir()));
+        danoField.setText(String.valueOf(c.getDano()));
+        danoPorSegundoField.setText(String.valueOf(c.getDanoPorSegundo()));
+        vidaField.setText(String.valueOf(c.getVida()));
+        alcanceField.setText(String.valueOf(c.getAlcance()));
+        velocidadeField.setText(String.valueOf(c.getVelocidade()));
+        velocidadeDeImpactoField.setText(String.valueOf(c.getVelocidadeDeImpacto()));
+        caminhoImagemField.setText(c.getCaminhoImagem());
+        tipoField.setValue(c.getTipo().toString());
+        raridadeField.setValue(c.getRaridade().toString());
+        alvoField.setValue(c.getAlvo().toString());
     }
 
-    private void voltarParaColecao( ActionEvent event ) {
-
-        Colecao colecao = new Colecao();
-
-        Stage novoStage = colecao.createStage( new Stage() );
-        novoStage.show();
-
-        this.stage.close();
-
-    }
-
-    private void botaoAdicionar( ActionEvent event ) {
+    private void botaoEditar( Carta c, CartaData dataAntiga ) {
 
         try{
 
-            Carta c = new Carta( nomeField.getText(), Integer.parseInt(nivelField.getText()), Double.parseDouble(custoElixirField.getText()), Tipo.valueOf(tipoField.getValue()), Raridade.valueOf(raridadeField.getValue()), caminhoImagemField.getText(), Integer.parseInt(danoField.getText()), Integer.parseInt(danoPorSegundoField.getText()), Integer.parseInt(vidaField.getText()), Alvo.valueOf(alvoField.getValue()), Integer.parseInt(alcanceField.getText()), Double.parseDouble(velocidadeField.getText()), Double.parseDouble(velocidadeDeImpactoField.getText()) );
-            cartaDAO.criarCarta( c );
-            Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
-            alerta.setTitle( "Carta criada com sucesso!" );
-            alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
-            alerta.showAndWait();
+            Carta cartaNova = new Carta( nomeField.getText(), Integer.parseInt(nivelField.getText()), Double.parseDouble(custoElixirField.getText()), Tipo.valueOf(tipoField.getValue()), Raridade.valueOf(raridadeField.getValue()), caminhoImagemField.getText(), Integer.parseInt(danoField.getText()), Integer.parseInt(danoPorSegundoField.getText()), Integer.parseInt(vidaField.getText()), Alvo.valueOf(alvoField.getValue()), Integer.parseInt(alcanceField.getText()), Double.parseDouble(velocidadeField.getText()), Double.parseDouble(velocidadeDeImpactoField.getText()) );
+            cartaNova.setNome( cartaOriginal.getNome() );
 
-            this.stage.close();
-            Colecao colecao = new Colecao();
-            Stage novoStage = colecao.createStage( new Stage() );
-            novoStage.show();
-
+            if( dataAntiga.atualizarCarta( cartaNova ) ){
+                Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
+                alerta.setTitle( "Carta atualizada com sucesso!" );
+                alerta.setContentText( "A carta " + cartaNova.getNome() + " foi atualizada com SUCESSO!" );
+                this.stage.close();
+                alerta.showAndWait();
+            } else {
+                System.err.println( "DEBUG >> Atualização falhou!" );
+            }
 
         } catch ( Exception e ) {
             System.err.println( e );

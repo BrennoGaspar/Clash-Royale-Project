@@ -27,7 +27,7 @@ public class DetalhesCarta {
     private Carta carta;
     private CartaData CartaDAO;
 
-    public DetalhesCarta(Carta carta) {
+    public DetalhesCarta( Carta carta ) {
         this.carta = carta;
         this.stage = new Stage();
         this.stage.setTitle( "Detalhes da Carta: " + carta.getNome() );
@@ -98,11 +98,15 @@ public class DetalhesCarta {
         remove.setAlignment( Pos.BOTTOM_CENTER );
         remove.setOnAction( e -> removerCarta( carta ) );
 
+        Button edit = new Button( "Editar " + carta.getNome() );
+        edit.setAlignment( Pos.BOTTOM_CENTER );
+        edit.setOnAction( e -> editarCarta( CartaDAO ) );
+
         Button close = new Button( "Fechar" );
         close.setAlignment( Pos.BOTTOM_CENTER );
         close.setOnAction( this::fecharDetalhes );
 
-        container.getChildren().addAll( imageContainer, grid, remove, close );
+        container.getChildren().addAll( imageContainer, grid, remove, edit, close );
 
         Scene cena = new Scene( container, 400, 500 );
         this.stage.setScene( cena );
@@ -131,6 +135,18 @@ public class DetalhesCarta {
             System.err.println( "Erro encontrado ao remover carta >> " + e );
         }
 
+    }
+
+    private void editarCarta( CartaData data ){
+
+        try{
+            CartaDAO = new CartaData();
+            AtualizarCarta att = new AtualizarCarta( carta, CartaDAO );
+            att.exibir();
+            this.stage.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void exibir() {
