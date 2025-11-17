@@ -122,8 +122,10 @@ public class Colecao extends Application {
 
     }
 
+    // Em Colecao.java
     public static void main(String[] args) {
-        launch();
+        // Inicia o aplicativo pela nova TelaInicial
+        Application.launch(TelaInicial.class, args);
     }
 
 }

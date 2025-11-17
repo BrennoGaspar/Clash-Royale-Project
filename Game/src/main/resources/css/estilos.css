@@ -1,0 +1,22 @@
+.background-principal {
+    -fx-background-image: url('../images/fundo_arena.jpg');
+
+
+    -fx-background-size: cover;          /* Redimensiona a imagem para cobrir a área */
+    -fx-background-repeat: no-repeat;    /* Impede a repetição */
+    -fx-background-position: center center; /* Centraliza a imagem */
+
+    /* GARANTINDO QUE O FUNDO SE ESPALHE POR TODA A ÁREA */
+    -fx-background-color: transparent;   /* Garante que não haja uma cor de fundo sólida por baixo */
+}
+.play-button {
+    -fx-font-size: 30px;
+    -fx-padding: 20px 50px;
+    -fx-background-color: #FFD700; /* Dourado */
+    -fx-text-fill: black;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+.play-button:hover {
+    -fx-background-color: #FFC000; /* Dourado mais escuro ao passar o mouse */
+}
