@@ -13,39 +13,36 @@ import javafx.stage.Stage;
 public class MainMenuScreen extends Application {
 
     private Stage primaryStage;
-    // Precisamos do CartaData aqui para passar para a tela de Decks
     private CartaData cartaDAO = new CartaData();
 
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
 
-        VBox container = new VBox(50); // Painel principal com espaçamento
+        VBox container = new VBox(50);
         container.setAlignment(Pos.CENTER);
-        container.getStyleClass().add("background-principal"); // Aplica o fundo
+        container.getStyleClass().add("background-principal");
 
-        HBox menuButtons = new HBox(50); // Painel para os botões
+        HBox menuButtons = new HBox(50);
         menuButtons.setAlignment(Pos.CENTER);
 
-        // --- Botão Decks ---
+        // --- Botões do Menu ---
         Button decksButton = new Button("Decks");
-        decksButton.getStyleClass().add("button-menu"); // Estilo do CSS
-        decksButton.setOnAction(this::abrirTelaDecks);
+        decksButton.getStyleClass().add("button-menu");
+        decksButton.setOnAction(this::openDecksScreen);
 
-        // --- Botão Criar Carta ---
         Button criarCartaButton = new Button("Criar Carta");
         criarCartaButton.getStyleClass().add("button-menu");
-        criarCartaButton.setOnAction(this::abrirTelaCriarCarta);
+        criarCartaButton.setOnAction(this::openCriarCartaScreen);
 
-        // --- Botão Coleção ---
         Button colecaoButton = new Button("Coleção");
         colecaoButton.getStyleClass().add("button-menu");
-        colecaoButton.setOnAction(this::abrirTelaColecao);
+        colecaoButton.setOnAction(this::openColecaoScreen);
 
         menuButtons.getChildren().addAll(decksButton, criarCartaButton, colecaoButton);
+
         container.getChildren().add(menuButtons);
 
-        // --- Carrega a Cena e o CSS ---
         Scene scene = new Scene(container, 1500, 700);
         String cssPath = getClass().getResource("/css/estilos.css").toExternalForm();
         scene.getStylesheets().add(cssPath);
@@ -55,24 +52,21 @@ public class MainMenuScreen extends Application {
         stage.show();
     }
 
-    // --- Métodos de Navegação ---
-
-    private void abrirTelaDecks(ActionEvent event) {
-        Decks decksScreen = new Decks(cartaDAO); // Passa o CartaData
-        decksScreen.exibir();
-        primaryStage.close(); // Fecha a tela de Menu
+    private void openDecksScreen(ActionEvent event) {
+        Decks decksScreen = new Decks(this.cartaDAO);
+        decksScreen.createStage(new Stage()).show();
+        primaryStage.close();
     }
 
-    private void abrirTelaCriarCarta(ActionEvent event) {
+    private void openCriarCartaScreen(ActionEvent event) {
         Cartas cartasScreen = new Cartas();
         cartasScreen.exibir();
-        primaryStage.close(); // Fecha a tela de Menu
+        primaryStage.close();
     }
 
-    private void abrirTelaColecao(ActionEvent event) {
+    private void openColecaoScreen(ActionEvent event) {
         Colecao colecaoScreen = new Colecao();
-        // O .createStage da Colecao já cria e retorna um novo Stage
         colecaoScreen.createStage(new Stage()).show();
-        primaryStage.close(); // Fecha a tela de Menu
+        primaryStage.close();
     }
 }

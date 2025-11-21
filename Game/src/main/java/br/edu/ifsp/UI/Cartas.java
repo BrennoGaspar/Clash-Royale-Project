@@ -1,8 +1,10 @@
 package br.edu.ifsp.UI;
 
 import br.edu.ifsp.data.CartaData;
-import br.edu.ifsp.data.DeckData;
-import br.edu.ifsp.main.*;
+import br.edu.ifsp.main.Carta;
+import br.edu.ifsp.main.Tipo;
+import br.edu.ifsp.main.Raridade;
+import br.edu.ifsp.main.Alvo;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,13 +17,12 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class Cartas {
 
     private Stage stage;
     CartaData cartaDAO = new CartaData();
-    // VARIAVEIS "GLOBAIS"
+
     TextField nomeField;
     TextField nivelField;
     TextField custoElixirField;
@@ -37,11 +38,8 @@ public class Cartas {
     TextField velocidadeDeImpactoField;
 
     public Cartas() {
-
-        // CONTAINER
         VBox container = new VBox();
 
-        // HEADER
         HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
         decks.setOnAction( this::funcaoBotao );
@@ -52,7 +50,6 @@ public class Cartas {
         header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
 
-        // BODY
         VBox body = new VBox();
 
         GridPane grid = new GridPane();
@@ -74,7 +71,7 @@ public class Cartas {
 
         grid.add(new Label("Tipo:"), 0, 3);
         tipoField = new ComboBox<>();
-        tipoField.getItems().addAll("TROPA", "FEITICO", "CONSTRUCAO");
+        tipoField.getItems().addAll("TROPA", "FEITIÇO", "CONSTRUCAO");
         tipoField.setPromptText("Selecione o Tipo");
         grid.add(tipoField, 1, 3);
 
@@ -138,26 +135,20 @@ public class Cartas {
         velocidadeDeImpactoField = new TextField();
         grid.add(velocidadeDeImpactoField, 1, 12);
 
-        // --- 3. BOTÃO DE AÇÃO ---
         Button btnCadastrar = new Button("Cadastrar Carta");
         btnCadastrar.setOnAction( this::botaoAdicionar );
         btnCadastrar.setMaxWidth(Double.MAX_VALUE);
 
-        // Colocado na coluna 1, na próxima linha
         grid.add( btnCadastrar, 1, 13 );
 
         body.getChildren().add( grid );
 
-        // DECK
         HBox deck = new HBox( 50 );
         deck.setAlignment( Pos.CENTER );
 
-        // FIM BODY
         body.getChildren().addAll( deck );
         body.setAlignment( Pos.CENTER );
 
-
-        // FIM CONTAINER
         container.getChildren().addAll( header, body );
 
         Scene cena = new Scene( container, 1500, 700 );
@@ -165,7 +156,6 @@ public class Cartas {
         this.stage = new Stage();
         this.stage.setScene( cena );
         this.stage.setTitle( ":: Criar Nova Carta ::" );
-
     }
 
     public void exibir() {
@@ -173,23 +163,16 @@ public class Cartas {
     }
 
     private void funcaoBotao(ActionEvent actionEvent) {
-
-        Decks novaJanela = new Decks( cartaDAO );
-        novaJanela.exibir();
-
-        this.stage.close();
-
+        Decks novaJanela = new Decks(cartaDAO);
+        novaJanela.createStage(new Stage()).show();
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
     private void voltarParaColecao( ActionEvent event ) {
-
         Colecao colecao = new Colecao();
-
         Stage novoStage = colecao.createStage( new Stage() );
         novoStage.show();
-
-        this.stage.close();
-
+        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }
 
     private void botaoAdicionar( ActionEvent event ) {
@@ -209,6 +192,7 @@ public class Cartas {
                     Double.parseDouble(velocidadeField.getText()),
                     Double.parseDouble(velocidadeDeImpactoField.getText())
             );
+
             boolean sucesso = cartaDAO.criarCarta( c );
 
             if (sucesso) {
@@ -234,24 +218,18 @@ public class Cartas {
             alerta.setTitle( "Erro de Preenchimento" );
             alerta.setContentText( "Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios." );
             alerta.showAndWait();
-            System.err.println( "Erro de formato (NumberFormatException): " + e.getMessage() ); // Mantém o log no console
 
         } catch ( NullPointerException | IllegalArgumentException e ) {
-            // ERRO DE VALOR: ComboBox vazio (null) ou valor inválido para Enums
             Alert alerta = new Alert( Alert.AlertType.ERROR );
             alerta.setTitle( "Erro de Seleção/Valor" );
             alerta.setContentText( "Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos." );
             alerta.showAndWait();
-            System.err.println( "Erro de valor/seleção: " + e.getMessage() ); // Mantém o log no console
 
         } catch ( Exception e ) {
-            // ERRO GERAL: Captura qualquer outro erro imprevisto
             Alert alerta = new Alert( Alert.AlertType.ERROR );
             alerta.setTitle( "Erro Desconhecido" );
-            alerta.setContentText( "Ocorreu um erro inesperado ao salvar a carta: " + e.getMessage() );
+            alerta.setContentText( "Ocorreu um erro inesperado: " + e.getMessage() );
             alerta.showAndWait();
-            System.err.println( "Erro geral: " + e.getMessage() );
         }
     }
-
 }

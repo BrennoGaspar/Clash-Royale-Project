@@ -1,56 +1,50 @@
 package br.edu.ifsp.main;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 public class Deck {
 
-    // atributos específicos de um deck
+    private int id;
     private ArrayList<Carta> cartas;
 
-    // construtor padrao (vazio)
-    public Deck( ArrayList<Carta> cartas ) {
-
-        if( cartas == null ){
-            this.cartas = new ArrayList<>();
-            return;
-        }
-
-        if (cartas.size() > 8) {
-            throw new IllegalArgumentException("Um deck não pode ter mais de 8 cartas.");
-        }
-
-        for( int i = 0; i < cartas.size(); i++ ){
-            for( int j = i+1; j < cartas.size(); j++ ){
-
-                if( cartas.get(i).equals( cartas.get(j) )){
-                    throw new IllegalArgumentException("Um deck não pode conter cartas repetidas.");
-                }
-
-            }
-        }
-
+    // Construtor para carregar do arquivo (com ID existente)
+    public Deck(int id, ArrayList<Carta> cartas) {
+        this.id = id;
         this.cartas = new ArrayList<>(cartas);
-
     }
 
-    // metodo getter
-    public double getCustoMedio() {
-        double custo = 0.0;
-        for( Carta c : cartas ){
-            custo += c.getCustoElixir();
-        }
-        if( cartas.isEmpty() ){
-            return 0.0;
-        } else {
-            return ( custo / cartas.size() );
-        }
+    // Construtor para criar um novo deck (ID inicial 0)
+    public Deck(ArrayList<Carta> cartas) {
+        this(0, cartas);
     }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public ArrayList<Carta> getCartas() {
         return this.cartas;
     }
 
+    public double getCustoMedio() {
+        double custo = 0.0;
+        for( Carta c : cartas ){
+            custo += c.getCustoElixir();
+        }
+        return cartas.isEmpty() ? 0.0 : ( custo / cartas.size() );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deck deck = (Deck) o;
+        // A igualdade é definida APENAS pelo ID
+        return id == deck.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -2,110 +2,147 @@ package br.edu.ifsp.UI;
 
 import br.edu.ifsp.data.CartaData;
 import br.edu.ifsp.data.DeckData;
-import br.edu.ifsp.main.Carta;
 import br.edu.ifsp.main.Deck;
-import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Decks {
 
+    private DeckData deckDAO;
+    private CartaData cartaDAO;
     private Stage stage;
 
-    DeckData deckDAO;
-    private ArrayList<Deck> decks;
-    private ArrayList<Carta> cartas;
+    // CORREÇÃO: NOVO CONSTRUTOR PÚBLICO
+    public Decks(CartaData cartaDAO) {
+        this.cartaDAO = cartaDAO;
+    }
 
-    public Decks( CartaData cartaDAO ) {
+    public Stage createStage(Stage stage) {
+        this.stage = stage;
+        // Instancia o DeckData usando o DAO que foi passado
+        this.deckDAO = new DeckData(this.cartaDAO);
 
-        this.deckDAO = new DeckData( cartaDAO );
+        BorderPane root = new BorderPane();
+        root.setPrefSize(900, 600);
 
-        // VERIFICAÇÃO ARRAY DECKS
-        if (decks == null) {
-            this.decks = deckDAO.lerDecks();
-        }
+        Button btnNovoDeck = new Button("Criar Novo Deck");
+        btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
 
-        // CONTAINER
-        VBox container = new VBox();
+        HBox header = new HBox(btnNovoDeck);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(10));
+        root.setTop(header);
 
-        // HEADER
-        HBox header = new HBox( 300 );
-        Button decks = new Button( "Decks" );
-        Button criarCarta = new Button( "Criar Carta" );
-        criarCarta.setOnAction( this::funcaoBotaoCriarCarta );
-        Button colecao = new Button( "Colecao" );
-        colecao.setOnAction( this::voltarParaColecao );
+        VBox listaDecks = new VBox(15);
+        listaDecks.setPadding(new Insets(20));
 
-        header.getChildren().addAll( decks, criarCarta, colecao );
-        header.setAlignment( Pos.TOP_CENTER );
+        ScrollPane scrollPane = new ScrollPane(listaDecks);
+        scrollPane.setFitToWidth(true);
+        root.setCenter(scrollPane);
 
-        // BODY
-        VBox body = new VBox();
+        renderizarListaDecks(listaDecks);
 
-        // DECK
-        HBox deck = new HBox( 50 );
-        if (this.decks != null) {
-            for( Deck d : this.decks ){
-                ArrayList<Carta> cartasDoDeck = d.getCartas();
-                Label custoMedio = new Label( "DECK: Custo Médio: " + String.format( "%.1f", d.getCustoMedio() ) );
-                custoMedio.setStyle( "-fx-font-weight: BOLD;" );
-                deck.getChildren().add( custoMedio );
-                if( cartasDoDeck != null ){
-                    for( Carta c : cartasDoDeck ){
-                        Label nome = new Label( c.getNome() );
-                        deck.getChildren().addAll( nome );
-                    }
-                }
-            }
-        }
-        deck.setAlignment( Pos.CENTER );
-
-        // FIM BODY
-        body.getChildren().addAll( deck );
-        body.setAlignment( Pos.CENTER );
-
-
-        // FIM CONTAINER
-        container.getChildren().addAll( header, body );
-
-        Scene cena = new Scene( container, 1500, 700 );
-
-        this.stage = new Stage();
-        this.stage.setScene( cena );
-        this.stage.setTitle( ":: Decks ::" );
-
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Gerenciamento de Decks");
+        return stage;
     }
 
     public void exibir() {
         this.stage.show();
     }
 
-    private void voltarParaColecao( ActionEvent event ) {
+    private void renderizarListaDecks(VBox listaDecks) {
+        listaDecks.getChildren().clear();
+        ArrayList<Deck> decks = deckDAO.lerDecks();
 
-            Colecao colecao = new Colecao();
+        if (decks.isEmpty()) {
+            listaDecks.getChildren().add(new Label("Nenhum deck encontrado. Crie um novo!"));
+            return;
+        }
 
-            Stage novoStage = colecao.createStage( new Stage() );
-            novoStage.show();
+        for (Deck deck : decks) {
+            HBox deckBox = new HBox(20);
+            deckBox.setAlignment(Pos.CENTER_LEFT);
+            deckBox.setPadding(new Insets(10));
+            deckBox.setStyle("-fx-border-color: #333; -fx-border-width: 1px; -fx-background-color: #f4f4f4;");
 
-            this.stage.close();
+            Label nomeDeck = new Label("Deck ID: " + deck.getId() + " - Média Elixir: " + String.format("%.1f", deck.getCustoMedio()));
+            nomeDeck.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
+            HBox botoesAcao = new HBox(10);
+            botoesAcao.setAlignment(Pos.CENTER_RIGHT);
+
+            Button btnEditar = new Button("Editar");
+            btnEditar.setOnAction(e -> abrirEdicaoDeck(deck));
+
+            Button btnExcluir = new Button("Excluir");
+            btnExcluir.setOnAction(e -> excluirDeck(deck, listaDecks));
+
+            botoesAcao.getChildren().addAll(btnEditar, btnExcluir);
+
+            HBox spacer = new HBox();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            deckBox.getChildren().addAll(nomeDeck, spacer, botoesAcao);
+            listaDecks.getChildren().add(deckBox);
+        }
     }
 
-    private void funcaoBotaoCriarCarta(ActionEvent actionEvent) {
+    private void abrirCriacaoDeck() {
+        CriarDeck criarDeck = new CriarDeck(cartaDAO);
+        criarDeck.exibir();
 
-        Cartas novaJanela = new Cartas(  );
-        novaJanela.exibir();
-
-        this.stage.close();
-
+        criarDeck.getStage().setOnHidden(e -> renderizarListaDecks((VBox) ((ScrollPane) stage.getScene().getRoot()).getContent()));
     }
 
+    private void abrirEdicaoDeck(Deck deck) {
+        mostrarAlerta("Funcionalidade Pendente", "A edição de decks será implementada no próximo passo.", AlertType.INFORMATION);
+    }
+
+    private void excluirDeck(Deck deck, VBox listaDecks) {
+        Alert confirmacao = new Alert(AlertType.CONFIRMATION);
+        confirmacao.setTitle("Confirmação de Exclusão");
+        confirmacao.setHeaderText(null);
+        confirmacao.setContentText("Tem certeza que deseja excluir o Deck ID " + deck.getId() + "?");
+
+        Optional<ButtonType> result = confirmacao.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                deckDAO.excluirDeck(deck);
+                mostrarAlerta("Sucesso", "Deck excluído com sucesso!", AlertType.INFORMATION);
+
+                renderizarListaDecks(listaDecks);
+            } catch (Exception e) {
+                mostrarAlerta("Erro de Exclusão", "Não foi possível excluir o deck: " + e.getMessage(), AlertType.ERROR);
+            }
+        }
+    }
+
+    private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
 }
