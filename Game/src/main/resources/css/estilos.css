@@ -20,3 +20,23 @@
 .play-button:hover {
     -fx-background-color: #FFC000; /* Dourado mais escuro ao passar o mouse */
 }
+.button-battle {
+    -fx-background-image: url('../images/BattleButton.png'); /* Caminho para imagem */
+    -fx-background-size: contain; /* Ajusta a imagem DENTRO do botão, mantendo proporção */
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent; /* MUITO IMPORTANTE: torna o fundo do JavaFX transparente */
+
+    /* Define o tamanho do botão para corresponder ao tamanho da imagem */
+    -fx-pref-width: 250px; /* Ajuste para a largura da imagem */
+    -fx-pref-height: 100px; /* Ajuste para a altura da imagem */
+
+    -fx-padding: 0; /* Remove qualquer preenchimento extra que o botão JavaFX possa ter */
+    -fx-text-fill: transparent; /* Se tiver texto no botão JavaFX, o deixa invisível */
+}
+
+/* Opcional: Efeito ao passar o mouse */
+.button-battle:hover {
+    -fx-opacity: 0.9; /* Deixa o botão um pouco transparente para indicar interação */
+    -fx-cursor: hand; /* Muda o cursor para uma mãozinha */
+}

@@ -87,7 +87,7 @@ public class Colecao extends Application {
 
         this.stage = new Stage();
         this.stage.setScene( cena );
-        this.stage.setTitle( ":: Decks ::" );
+        this.stage.setTitle( ":: Coleção ::" );
         return this.stage;
 
     }
@@ -122,9 +122,7 @@ public class Colecao extends Application {
 
     }
 
-    // Em Colecao.java
     public static void main(String[] args) {
-        // Inicia o aplicativo pela nova TelaInicial
         Application.launch(TelaInicial.class, args);
     }
 

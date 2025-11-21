@@ -193,27 +193,65 @@ public class Cartas {
     }
 
     private void botaoAdicionar( ActionEvent event ) {
-
         try{
+            Carta c = new Carta(
+                    nomeField.getText(),
+                    Integer.parseInt(nivelField.getText()),
+                    Double.parseDouble(custoElixirField.getText()),
+                    Tipo.valueOf(tipoField.getValue().toUpperCase()),
+                    Raridade.valueOf(raridadeField.getValue().toUpperCase()),
+                    caminhoImagemField.getText(),
+                    Integer.parseInt(danoField.getText()),
+                    Integer.parseInt(danoPorSegundoField.getText()),
+                    Integer.parseInt(vidaField.getText()),
+                    Alvo.valueOf(alvoField.getValue().toUpperCase()),
+                    Integer.parseInt(alcanceField.getText()),
+                    Double.parseDouble(velocidadeField.getText()),
+                    Double.parseDouble(velocidadeDeImpactoField.getText())
+            );
+            boolean sucesso = cartaDAO.criarCarta( c );
 
-            Carta c = new Carta( nomeField.getText(), Integer.parseInt(nivelField.getText()), Double.parseDouble(custoElixirField.getText()), Tipo.valueOf(tipoField.getValue()), Raridade.valueOf(raridadeField.getValue()), caminhoImagemField.getText(), Integer.parseInt(danoField.getText()), Integer.parseInt(danoPorSegundoField.getText()), Integer.parseInt(vidaField.getText()), Alvo.valueOf(alvoField.getValue()), Integer.parseInt(alcanceField.getText()), Double.parseDouble(velocidadeField.getText()), Double.parseDouble(velocidadeDeImpactoField.getText()) );
-            cartaDAO.criarCarta( c );
-            Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
-            alerta.setTitle( "Carta criada com sucesso!" );
-            alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
+            if (sucesso) {
+                Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
+                alerta.setTitle( "Carta criada com sucesso!" );
+                alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
+                alerta.showAndWait();
+
+                ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+                Colecao colecao = new Colecao();
+                Stage novoStage = colecao.createStage( new Stage() );
+                novoStage.show();
+
+            } else {
+                Alert alerta = new Alert( Alert.AlertType.ERROR );
+                alerta.setTitle( "Erro: Cadastro Duplicado" );
+                alerta.setContentText( "A carta '" + c.getNome() + "' já existe. Não é permitido cadastro duplicado." );
+                alerta.showAndWait();
+            }
+
+        } catch ( NumberFormatException e ) {
+            Alert alerta = new Alert( Alert.AlertType.ERROR );
+            alerta.setTitle( "Erro de Preenchimento" );
+            alerta.setContentText( "Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios." );
             alerta.showAndWait();
+            System.err.println( "Erro de formato (NumberFormatException): " + e.getMessage() ); // Mantém o log no console
 
-            this.stage.close();
-            Colecao colecao = new Colecao();
-            Stage novoStage = colecao.createStage( new Stage() );
-            novoStage.show();
-
+        } catch ( NullPointerException | IllegalArgumentException e ) {
+            // ERRO DE VALOR: ComboBox vazio (null) ou valor inválido para Enums
+            Alert alerta = new Alert( Alert.AlertType.ERROR );
+            alerta.setTitle( "Erro de Seleção/Valor" );
+            alerta.setContentText( "Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos." );
+            alerta.showAndWait();
+            System.err.println( "Erro de valor/seleção: " + e.getMessage() ); // Mantém o log no console
 
         } catch ( Exception e ) {
-            System.err.println( e );
+            // ERRO GERAL: Captura qualquer outro erro imprevisto
+            Alert alerta = new Alert( Alert.AlertType.ERROR );
+            alerta.setTitle( "Erro Desconhecido" );
+            alerta.setContentText( "Ocorreu um erro inesperado ao salvar a carta: " + e.getMessage() );
+            alerta.showAndWait();
+            System.err.println( "Erro geral: " + e.getMessage() );
         }
-
-
     }
 
 }

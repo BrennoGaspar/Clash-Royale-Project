@@ -2,9 +2,10 @@ package br.edu.ifsp.UI;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -18,23 +19,30 @@ public class TelaInicial extends Application {
 
         StackPane root = new StackPane();
         root.getStyleClass().add("background-principal");
+        root.setPrefSize(1500, 700);
 
-        //Esta linha para garantir que o root preencha 100%
-        root.setPrefSize(1500, 700); // Define um tamanho preferencial inicial para o StackPane
-        // Isso é útil especialmente se o StackPane não tiver filhos que o "esticam"
-
-        
-
-        Button playButton = new Button("PLAY");
-        // Aplique a classe CSS ao botão
-        playButton.getStyleClass().add("play-button");
+        Button playButton = new Button("");
+        playButton.getStyleClass().add("button-battle");
         playButton.setOnAction(this::abrirMenuPrincipal);
 
-        root.getChildren().add(playButton);
+        //mover botão
+        playButton.setTranslateY(50);
+        playButton.setTranslateX(-30);
+
+        Image titleImage = new Image(getClass().getResourceAsStream("/images/title.png"));
+        ImageView titleImageView = new ImageView(titleImage);
+        titleImageView.setFitWidth(450);
+        titleImageView.setPreserveRatio(true);
+
+        // Empurra para CIMA
+        titleImageView.setTranslateY(-250);
+
+        // Empurra para a DIREITA
+        titleImageView.setTranslateX(10);
+
+        root.getChildren().addAll(playButton, titleImageView);
 
         Scene scene = new Scene(root, 1500, 700);
-
-        // --- Adicione estas linhas para que o root se ajuste ao tamanho da Scene ---
         root.prefWidthProperty().bind(scene.widthProperty());
         root.prefHeightProperty().bind(scene.heightProperty());
 
