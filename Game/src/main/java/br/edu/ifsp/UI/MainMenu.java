@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainMenuScreen extends Application {
+public class MainMenu extends Application {
 
     private Stage primaryStage;
     private CartaData cartaDAO = new CartaData();
@@ -29,15 +29,15 @@ public class MainMenuScreen extends Application {
         // --- Botões do Menu ---
         Button decksButton = new Button("Decks");
         decksButton.getStyleClass().add("button-menu");
-        decksButton.setOnAction(this::openDecksScreen);
+        decksButton.setOnAction(this::DecksTela);
 
         Button criarCartaButton = new Button("Criar Carta");
         criarCartaButton.getStyleClass().add("button-menu");
-        criarCartaButton.setOnAction(this::openCriarCartaScreen);
+        criarCartaButton.setOnAction(this::CriarCartaTela);
 
         Button colecaoButton = new Button("Coleção");
         colecaoButton.getStyleClass().add("button-menu");
-        colecaoButton.setOnAction(this::openColecaoScreen);
+        colecaoButton.setOnAction(this::ColecaoTela);
 
         menuButtons.getChildren().addAll(decksButton, criarCartaButton, colecaoButton);
 
@@ -52,19 +52,19 @@ public class MainMenuScreen extends Application {
         stage.show();
     }
 
-    private void openDecksScreen(ActionEvent event) {
+    private void DecksTela(ActionEvent event) {
         Decks decksScreen = new Decks(this.cartaDAO);
         decksScreen.createStage(new Stage()).show();
         primaryStage.close();
     }
 
-    private void openCriarCartaScreen(ActionEvent event) {
+    private void CriarCartaTela(ActionEvent event) {
         Cartas cartasScreen = new Cartas();
         cartasScreen.exibir();
         primaryStage.close();
     }
 
-    private void openColecaoScreen(ActionEvent event) {
+    private void ColecaoTela(ActionEvent event) {
         Colecao colecaoScreen = new Colecao();
         colecaoScreen.createStage(new Stage()).show();
         primaryStage.close();

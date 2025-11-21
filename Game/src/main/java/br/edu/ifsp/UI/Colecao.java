@@ -63,14 +63,16 @@ public class Colecao extends Application {
                 btnDetalhes.setOnAction( e -> exibirDetalhesCarta(c) );
                 String caminho = c.getCaminhoImagem();
                 try{
-                    Image imagemCarta = new Image( new FileInputStream(caminho) );
+                    Image imagemCarta = new Image(getClass().getResourceAsStream(caminho));
+
                     ImageView viewImagem = new ImageView(imagemCarta);
                     viewImagem.setFitHeight( 50 );
                     viewImagem.setFitWidth( 50 );
                     card.getChildren().addAll( nome, viewImagem, custoElixir, btnDetalhes );
-                } catch ( FileNotFoundException e ){
+
+                } catch ( Exception e ){ // Alteramos para Exception pois getResourceAsStream pode lançar IllegalArgumentException se o caminho for null/inválido
                     System.err.println( "Erro >> Arquivo de imagem nao encontrado em: " + caminho );
-                    card.getChildren().add( new Label( "Foto não encontrada!" ) );
+                    card.getChildren().add( new Label( "Foto não encontrada! (Path: " + caminho + ")" ) );
                 }
                 cardList.getChildren().add( card );
             }
@@ -100,8 +102,8 @@ public class Colecao extends Application {
     private void funcaoBotao(ActionEvent actionEvent) {
 
         Decks novaJanela = new Decks( cartaDAO );
-        novaJanela.exibir();
-
+        Stage decksStage = novaJanela.createStage(new Stage());
+        decksStage.show();
         this.stage.close();
 
     }

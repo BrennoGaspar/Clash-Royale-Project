@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,27 +28,47 @@ public class Decks {
     private CartaData cartaDAO;
     private Stage stage;
 
-    // CORREÇÃO: NOVO CONSTRUTOR PÚBLICO
+    // Construtor corrigido: Recebe a dependência CartaData
     public Decks(CartaData cartaDAO) {
         this.cartaDAO = cartaDAO;
     }
 
     public Stage createStage(Stage stage) {
         this.stage = stage;
-        // Instancia o DeckData usando o DAO que foi passado
         this.deckDAO = new DeckData(this.cartaDAO);
 
         BorderPane root = new BorderPane();
         root.setPrefSize(900, 600);
 
-        Button btnNovoDeck = new Button("Criar Novo Deck");
-        btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
+        // --- HEADER (Botões de Navegação) ---
+        HBox header = new HBox( 30 );
+        Button decks = new Button( "Decks" ); // Botão da tela atual
 
-        HBox header = new HBox(btnNovoDeck);
-        header.setAlignment(Pos.CENTER_LEFT);
+        // Botão de navegação para Criar Carta
+        Button criarCarta = new Button( "Criar Carta" );
+        criarCarta.setOnAction( this::funcaoBotaoCarta );
+
+        // Botão de navegação para Coleção
+        Button colecao = new Button( "Coleção" );
+        colecao.setOnAction( this::funcaoBotaoColecao );
+
+        header.getChildren().addAll( decks, criarCarta, colecao );
+        header.setAlignment( Pos.TOP_CENTER );
         header.setPadding(new Insets(10));
         root.setTop(header);
 
+        // --- Botão de Ação Principal (Criar Novo Deck) ---
+        Button btnNovoDeck = new Button("Criar Novo Deck");
+        btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
+
+        VBox topActions = new VBox(10);
+        topActions.setAlignment(Pos.CENTER_LEFT);
+        topActions.setPadding(new Insets(10, 20, 0, 20));
+        topActions.getChildren().add(btnNovoDeck);
+
+        root.setTop(new VBox(header, topActions)); // Combina Header e botão principal
+
+        // --- Lista de Decks (Centro) ---
         VBox listaDecks = new VBox(15);
         listaDecks.setPadding(new Insets(20));
 
@@ -66,6 +87,7 @@ public class Decks {
     public void exibir() {
         this.stage.show();
     }
+
 
     private void renderizarListaDecks(VBox listaDecks) {
         listaDecks.getChildren().clear();
@@ -111,8 +133,22 @@ public class Decks {
         criarDeck.getStage().setOnHidden(e -> renderizarListaDecks((VBox) ((ScrollPane) stage.getScene().getRoot()).getContent()));
     }
 
+    private void funcaoBotaoCarta(ActionEvent actionEvent) {
+        Cartas novaJanela = new Cartas();
+        novaJanela.exibir();
+        this.stage.close();
+    }
+
+    private void funcaoBotaoColecao(ActionEvent actionEvent) {
+        Colecao colecao = new Colecao();
+        Stage novoStage = colecao.createStage( new Stage() );
+        novoStage.show();
+        this.stage.close();
+    }
+
     private void abrirEdicaoDeck(Deck deck) {
         mostrarAlerta("Funcionalidade Pendente", "A edição de decks será implementada no próximo passo.", AlertType.INFORMATION);
+        // Próximo passo: Abrir CriarDeck(cartaDAO, deck)
     }
 
     private void excluirDeck(Deck deck, VBox listaDecks) {

@@ -15,6 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import java.io.File;
 
@@ -99,7 +104,31 @@ public class Cartas {
             File selectedFile = fileChooser.showOpenDialog(this.stage);
 
             if (selectedFile != null) {
-                caminhoImagemField.setText(selectedFile.getAbsolutePath());
+                try {
+                    // Define a pasta de destino dentro do seu projeto (ajuste o caminho se necessário!)
+                    // Assumimos que o código está rodando no diretório-raiz do projeto.
+                    String resourcePath = "src/main/resources/images/";
+
+                    // 1. Gera um nome de arquivo único para evitar colisões
+                    String originalFileName = selectedFile.getName();
+                    String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                    String newFileName = UUID.randomUUID().toString() + extension;
+
+                    // 2. Define o caminho de destino
+                    Path targetPath = Paths.get(resourcePath + newFileName);
+
+                    // 3. COPIA o arquivo físico para a pasta de resources
+                    Files.copy(selectedFile.toPath(), targetPath);
+
+                    // 4. Salva o CAMINHO RELATIVO (Classpath) no campo
+                    String classpath = "/images/" + newFileName;
+                    caminhoImagemField.setText(classpath);
+
+                    mostrarAlerta("Sucesso", "Imagem copiada para resources com sucesso!", Alert.AlertType.INFORMATION);
+
+                } catch (java.io.IOException ioException) {
+                    mostrarAlerta("Erro de Arquivo", "Não foi possível copiar a imagem: " + ioException.getMessage(), Alert.AlertType.ERROR);
+                }
             }
         });
         fileSelectorBox.getChildren().addAll( caminhoImagemField, selectImage );
@@ -165,7 +194,7 @@ public class Cartas {
     private void funcaoBotao(ActionEvent actionEvent) {
         Decks novaJanela = new Decks(cartaDAO);
         novaJanela.createStage(new Stage()).show();
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        this.stage.close();
     }
 
     private void voltarParaColecao( ActionEvent event ) {
@@ -231,5 +260,12 @@ public class Cartas {
             alerta.setContentText( "Ocorreu um erro inesperado: " + e.getMessage() );
             alerta.showAndWait();
         }
+    }
+    private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

@@ -42,13 +42,15 @@ public class DetalhesCarta {
         HBox imageContainer = new HBox();
         String caminho = carta.getCaminhoImagem();
         try{
-            Image imagemCarta = new Image( new FileInputStream(caminho) );
+            Image imagemCarta = new Image(getClass().getResourceAsStream(caminho));
             ImageView viewImagem = new ImageView(imagemCarta);
             viewImagem.setFitHeight( 50 );
             viewImagem.setFitWidth( 50 );
-            imageContainer.getChildren().addAll( viewImagem );
-        } catch ( FileNotFoundException e ){
-            System.err.println( "Erro >> Arquivo de imagem nao encontrado em: " + caminho );
+
+            imageContainer.getChildren().add( viewImagem );
+
+        } catch ( Exception e ){
+            System.err.println( "Erro >> Arquivo de imagem não encontrado: " + caminho );
             imageContainer.getChildren().add( new Label( "Foto não encontrada!" ) );
         }
 
