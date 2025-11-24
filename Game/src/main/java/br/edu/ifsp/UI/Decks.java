@@ -38,7 +38,7 @@ public class Decks {
         this.deckDAO = new DeckData(this.cartaDAO);
 
         BorderPane root = new BorderPane();
-        root.setPrefSize(900, 600);
+        root.setPrefSize( 1500, 700 );
 
         // --- HEADER (Botões de Navegação) ---
         HBox header = new HBox( 30 );
@@ -62,7 +62,7 @@ public class Decks {
         btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
 
         VBox topActions = new VBox(10);
-        topActions.setAlignment(Pos.CENTER_LEFT);
+        topActions.setAlignment(Pos.CENTER);
         topActions.setPadding(new Insets(10, 20, 0, 20));
         topActions.getChildren().add(btnNovoDeck);
 
@@ -94,7 +94,9 @@ public class Decks {
         ArrayList<Deck> decks = deckDAO.lerDecks();
 
         if (decks.isEmpty()) {
-            listaDecks.getChildren().add(new Label("Nenhum deck encontrado. Crie um novo!"));
+            Label txtNull = new Label( "Nenhum deck encontrado. Crie um novo!" );
+            listaDecks.setAlignment( Pos.CENTER );
+            listaDecks.getChildren().add( txtNull );
             return;
         }
 
