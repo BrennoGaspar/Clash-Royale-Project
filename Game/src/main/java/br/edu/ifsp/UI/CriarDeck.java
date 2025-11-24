@@ -36,7 +36,7 @@ public class CriarDeck {
         this.deckDAO = new DeckData(cartaDAO);
 
         BorderPane root = new BorderPane();
-        root.setPrefSize(1200, 800);
+        root.setPrefSize(1200, 700);
 
         // --- 1. Lado Esquerdo: Coleção (Todas as Cartas Disponíveis) ---
         ScrollPane scrollPane = new ScrollPane(colecaoLista);
@@ -106,14 +106,14 @@ public class CriarDeck {
 
             deckDAO.criarDeck(novoDeck);
 
-            mostrarAlerta("Sucesso!", "Deck salvo com sucesso! Contém 8 cartas.", Alert.AlertType.INFORMATION);
+            mostrarAlerta("Sucesso!", "Deck salvo com sucesso! ", Alert.AlertType.INFORMATION);
 
             this.stage.close();
 
         } catch (IllegalArgumentException e) {
             mostrarAlerta("Erro de Validação", e.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception e) {
-            mostrarAlerta("Erro de I/O", "Houve um erro ao gravar o arquivo: " + e.getMessage(), Alert.AlertType.ERROR);
+            mostrarAlerta("Saia e volte para a página Decks", "Para carregar o deck de forma correta, saia e volte para a tela!" , Alert.AlertType.INFORMATION);
         }
     }
 

@@ -31,7 +31,7 @@ public class Deck {
         for( Carta c : cartas ){
             custo += c.getCustoElixir();
         }
-        return cartas.isEmpty() ? 0.0 : ( custo / cartas.size() );
+        return custo / 8;
     }
 
     @Override

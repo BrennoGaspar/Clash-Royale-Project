@@ -154,7 +154,7 @@ public class AtualizarCarta {
     private void preencherCampos( Carta c ) {
         nomeField.setText(c.getNome());
         nivelField.setText(String.valueOf(c.getNivel()));
-        custoElixirField.setText(String.format("%.2f", c.getCustoElixir()));
+        custoElixirField.setText(String.format("%.0f", c.getCustoElixir()));
         danoField.setText(String.valueOf(c.getDano()));
         danoPorSegundoField.setText(String.valueOf(c.getDanoPorSegundo()));
         vidaField.setText(String.valueOf(c.getVida()));
