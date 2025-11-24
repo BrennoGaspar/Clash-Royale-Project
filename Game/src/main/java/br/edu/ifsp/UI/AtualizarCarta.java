@@ -170,23 +170,37 @@ public class AtualizarCarta {
 
     private void botaoEditar( Carta c, CartaData dataAntiga ) {
 
-        try{
+        double custoElixirFieldValor = Double.parseDouble(custoElixirField.getText());
 
-            Carta cartaNova = new Carta( nomeField.getText(), Integer.parseInt(nivelField.getText()), Double.parseDouble(custoElixirField.getText()), Tipo.valueOf(tipoField.getValue()), Raridade.valueOf(raridadeField.getValue()), caminhoImagemField.getText(), Integer.parseInt(danoField.getText()), Integer.parseInt(danoPorSegundoField.getText()), Integer.parseInt(vidaField.getText()), Alvo.valueOf(alvoField.getValue()), Integer.parseInt(alcanceField.getText()), Double.parseDouble(velocidadeField.getText()), Double.parseDouble(velocidadeDeImpactoField.getText()) );
-            cartaNova.setNome( cartaOriginal.getNome() );
+        if( custoElixirFieldValor > 9.0 || custoElixirFieldValor < 1.0 ){
 
-            if( dataAntiga.atualizarCarta( cartaNova ) ){
-                Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
-                alerta.setTitle( "Carta atualizada com sucesso!" );
-                alerta.setContentText( "A carta " + cartaNova.getNome() + " foi atualizada com SUCESSO!" );
-                this.stage.close();
-                alerta.showAndWait();
-            } else {
-                System.err.println( "DEBUG >> Atualização falhou!" );
+            Alert alertaElixir = new Alert( Alert.AlertType.ERROR );
+            alertaElixir.setContentText( "O custo de elixir deve ser menor ou igual a 9 OU maior ou igual a 1!" );
+            alertaElixir.setTitle( "Erro no custo de elixir!" );
+            custoElixirField.setText( "" );
+            alertaElixir.showAndWait();
+
+        } else {
+
+            try {
+
+                Carta cartaNova = new Carta(nomeField.getText(), Integer.parseInt(nivelField.getText()), Double.parseDouble(custoElixirField.getText()), Tipo.valueOf(tipoField.getValue()), Raridade.valueOf(raridadeField.getValue()), caminhoImagemField.getText(), Integer.parseInt(danoField.getText()), Integer.parseInt(danoPorSegundoField.getText()), Integer.parseInt(vidaField.getText()), Alvo.valueOf(alvoField.getValue()), Integer.parseInt(alcanceField.getText()), Double.parseDouble(velocidadeField.getText()), Double.parseDouble(velocidadeDeImpactoField.getText()));
+                cartaNova.setNome(cartaOriginal.getNome());
+
+                if (dataAntiga.atualizarCarta(cartaNova)) {
+                    Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+                    alerta.setTitle("Carta atualizada com sucesso!");
+                    alerta.setContentText("A carta " + cartaNova.getNome() + " foi atualizada com SUCESSO!");
+                    this.stage.close();
+                    alerta.showAndWait();
+                } else {
+                    System.err.println("DEBUG >> Atualização falhou!");
+                }
+
+            } catch (Exception e) {
+                System.err.println(e);
             }
 
-        } catch ( Exception e ) {
-            System.err.println( e );
         }
 
 

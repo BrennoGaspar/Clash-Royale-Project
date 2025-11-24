@@ -43,7 +43,7 @@ public class Cartas {
     TextField velocidadeDeImpactoField;
 
     public Cartas() {
-        VBox container = new VBox();
+        VBox container = new VBox( 20 );
 
         HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
@@ -205,61 +205,76 @@ public class Cartas {
     }
 
     private void botaoAdicionar( ActionEvent event ) {
-        try{
-            Carta c = new Carta(
-                    nomeField.getText(),
-                    Integer.parseInt(nivelField.getText()),
-                    Double.parseDouble(custoElixirField.getText()),
-                    Tipo.valueOf(tipoField.getValue().toUpperCase()),
-                    Raridade.valueOf(raridadeField.getValue().toUpperCase()),
-                    caminhoImagemField.getText(),
-                    Integer.parseInt(danoField.getText()),
-                    Integer.parseInt(danoPorSegundoField.getText()),
-                    Integer.parseInt(vidaField.getText()),
-                    Alvo.valueOf(alvoField.getValue().toUpperCase()),
-                    Integer.parseInt(alcanceField.getText()),
-                    Double.parseDouble(velocidadeField.getText()),
-                    Double.parseDouble(velocidadeDeImpactoField.getText())
-            );
 
-            boolean sucesso = cartaDAO.criarCarta( c );
+        double custoElixirFieldValor = Double.parseDouble(custoElixirField.getText());
 
-            if (sucesso) {
-                Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
-                alerta.setTitle( "Carta criada com sucesso!" );
-                alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
+        if( custoElixirFieldValor > 9.0 || custoElixirFieldValor < 1.0 ){
+
+            Alert alertaElixir = new Alert( Alert.AlertType.ERROR );
+            alertaElixir.setContentText( "O custo de elixir deve ser menor ou igual a 9 OU maior ou igual a 1!" );
+            alertaElixir.setTitle( "Erro no custo de elixir!" );
+            custoElixirField.setText( "" );
+            alertaElixir.showAndWait();
+
+        } else {
+
+            try{
+                Carta c = new Carta(
+                        nomeField.getText(),
+                        Integer.parseInt(nivelField.getText()),
+                        Double.parseDouble(custoElixirField.getText()),
+                        Tipo.valueOf(tipoField.getValue().toUpperCase()),
+                        Raridade.valueOf(raridadeField.getValue().toUpperCase()),
+                        caminhoImagemField.getText(),
+                        Integer.parseInt(danoField.getText()),
+                        Integer.parseInt(danoPorSegundoField.getText()),
+                        Integer.parseInt(vidaField.getText()),
+                        Alvo.valueOf(alvoField.getValue().toUpperCase()),
+                        Integer.parseInt(alcanceField.getText()),
+                        Double.parseDouble(velocidadeField.getText()),
+                        Double.parseDouble(velocidadeDeImpactoField.getText())
+                );
+
+                boolean sucesso = cartaDAO.criarCarta( c );
+
+                if (sucesso) {
+                    Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
+                    alerta.setTitle( "Carta criada com sucesso!" );
+                    alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
+                    alerta.showAndWait();
+
+                    ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+                    Colecao colecao = new Colecao();
+                    Stage novoStage = colecao.createStage( new Stage() );
+                    novoStage.show();
+
+                } else {
+                    Alert alerta = new Alert( Alert.AlertType.ERROR );
+                    alerta.setTitle( "Erro: Cadastro Duplicado" );
+                    alerta.setContentText( "A carta '" + c.getNome() + "' já existe. Não é permitido cadastro duplicado." );
+                    alerta.showAndWait();
+                }
+            } catch ( NumberFormatException e ) {
+                Alert alerta = new Alert( Alert.AlertType.ERROR );
+                alerta.setTitle( "Erro de Preenchimento" );
+                alerta.setContentText( "Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios." );
                 alerta.showAndWait();
 
-                ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-                Colecao colecao = new Colecao();
-                Stage novoStage = colecao.createStage( new Stage() );
-                novoStage.show();
-
-            } else {
+            } catch ( NullPointerException | IllegalArgumentException e ) {
                 Alert alerta = new Alert( Alert.AlertType.ERROR );
-                alerta.setTitle( "Erro: Cadastro Duplicado" );
-                alerta.setContentText( "A carta '" + c.getNome() + "' já existe. Não é permitido cadastro duplicado." );
+                alerta.setTitle( "Erro de Seleção/Valor" );
+                alerta.setContentText( "Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos." );
+                alerta.showAndWait();
+
+            } catch ( Exception e ) {
+                Alert alerta = new Alert( Alert.AlertType.ERROR );
+                alerta.setTitle( "Erro Desconhecido" );
+                alerta.setContentText( "Ocorreu um erro inesperado: " + e.getMessage() );
                 alerta.showAndWait();
             }
 
-        } catch ( NumberFormatException e ) {
-            Alert alerta = new Alert( Alert.AlertType.ERROR );
-            alerta.setTitle( "Erro de Preenchimento" );
-            alerta.setContentText( "Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios." );
-            alerta.showAndWait();
-
-        } catch ( NullPointerException | IllegalArgumentException e ) {
-            Alert alerta = new Alert( Alert.AlertType.ERROR );
-            alerta.setTitle( "Erro de Seleção/Valor" );
-            alerta.setContentText( "Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos." );
-            alerta.showAndWait();
-
-        } catch ( Exception e ) {
-            Alert alerta = new Alert( Alert.AlertType.ERROR );
-            alerta.setTitle( "Erro Desconhecido" );
-            alerta.setContentText( "Ocorreu um erro inesperado: " + e.getMessage() );
-            alerta.showAndWait();
         }
+
     }
     private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);

@@ -41,7 +41,7 @@ public class Decks {
         root.setPrefSize( 1500, 700 );
 
         // --- HEADER (Botões de Navegação) ---
-        HBox header = new HBox( 30 );
+        HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" ); // Botão da tela atual
 
         // Botão de navegação para Criar Carta
@@ -54,7 +54,6 @@ public class Decks {
 
         header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
-        header.setPadding(new Insets(10));
         root.setTop(header);
 
         // --- Botão de Ação Principal (Criar Novo Deck) ---
