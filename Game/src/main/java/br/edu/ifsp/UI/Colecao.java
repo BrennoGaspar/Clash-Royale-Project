@@ -34,6 +34,7 @@ public class Colecao extends Application {
 
         // CONTAINER
         VBox container = new VBox( 20 );
+        container.getStyleClass().add("background-app");
 
         // HEADER
         HBox header = new HBox( 300 );
@@ -63,16 +64,14 @@ public class Colecao extends Application {
                 btnDetalhes.setOnAction( e -> exibirDetalhesCarta(c) );
                 String caminho = c.getCaminhoImagem();
                 try{
-                    Image imagemCarta = new Image(getClass().getResourceAsStream(caminho));
-
+                    Image imagemCarta = new Image( new FileInputStream(caminho) );
                     ImageView viewImagem = new ImageView(imagemCarta);
                     viewImagem.setFitHeight( 50 );
                     viewImagem.setFitWidth( 50 );
                     card.getChildren().addAll( nome, viewImagem, custoElixir, btnDetalhes );
-
-                } catch ( Exception e ){ // Alteramos para Exception pois getResourceAsStream pode lançar IllegalArgumentException se o caminho for null/inválido
+                } catch ( FileNotFoundException e ){
                     System.err.println( "Erro >> Arquivo de imagem nao encontrado em: " + caminho );
-                    card.getChildren().add( new Label( "Foto não encontrada! (Path: " + caminho + ")" ) );
+                    card.getChildren().add( new Label( "Foto não encontrada!" ) );
                 }
                 cardList.getChildren().add( card );
             }

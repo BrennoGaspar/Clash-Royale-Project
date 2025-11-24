@@ -15,11 +15,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
 
 import java.io.File;
 
@@ -44,6 +39,7 @@ public class Cartas {
 
     public Cartas() {
         VBox container = new VBox( 20 );
+        container.getStyleClass().add("background-app");
 
         HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
@@ -104,31 +100,7 @@ public class Cartas {
             File selectedFile = fileChooser.showOpenDialog(this.stage);
 
             if (selectedFile != null) {
-                try {
-                    // Define a pasta de destino dentro do seu projeto (ajuste o caminho se necessário!)
-                    // Assumimos que o código está rodando no diretório-raiz do projeto.
-                    String resourcePath = "src/main/resources/images/";
-
-                    // 1. Gera um nome de arquivo único para evitar colisões
-                    String originalFileName = selectedFile.getName();
-                    String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                    String newFileName = UUID.randomUUID().toString() + extension;
-
-                    // 2. Define o caminho de destino
-                    Path targetPath = Paths.get(resourcePath + newFileName);
-
-                    // 3. COPIA o arquivo físico para a pasta de resources
-                    Files.copy(selectedFile.toPath(), targetPath);
-
-                    // 4. Salva o CAMINHO RELATIVO (Classpath) no campo
-                    String classpath = "/images/" + newFileName;
-                    caminhoImagemField.setText(classpath);
-
-                    mostrarAlerta("Sucesso", "Imagem copiada para resources com sucesso!", Alert.AlertType.INFORMATION);
-
-                } catch (java.io.IOException ioException) {
-                    mostrarAlerta("Erro de Arquivo", "Não foi possível copiar a imagem: " + ioException.getMessage(), Alert.AlertType.ERROR);
-                }
+                caminhoImagemField.setText(selectedFile.getAbsolutePath());
             }
         });
         fileSelectorBox.getChildren().addAll( caminhoImagemField, selectImage );
@@ -181,7 +153,6 @@ public class Cartas {
         container.getChildren().addAll( header, body );
 
         Scene cena = new Scene( container, 1500, 700 );
-
         this.stage = new Stage();
         this.stage.setScene( cena );
         this.stage.setTitle( ":: Criar Nova Carta ::" );
@@ -194,18 +165,17 @@ public class Cartas {
     private void funcaoBotao(ActionEvent actionEvent) {
         Decks novaJanela = new Decks(cartaDAO);
         novaJanela.createStage(new Stage()).show();
-        this.stage.close();
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
     private void voltarParaColecao( ActionEvent event ) {
         Colecao colecao = new Colecao();
         Stage novoStage = colecao.createStage( new Stage() );
         novoStage.show();
-        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+        this.stage.close();
     }
 
     private void botaoAdicionar( ActionEvent event ) {
-
         double custoElixirFieldValor = Double.parseDouble(custoElixirField.getText());
 
         if( custoElixirFieldValor > 9.0 || custoElixirFieldValor < 1.0 ){
@@ -218,7 +188,7 @@ public class Cartas {
 
         } else {
 
-            try{
+            try {
                 Carta c = new Carta(
                         nomeField.getText(),
                         Integer.parseInt(nivelField.getText()),
@@ -235,52 +205,43 @@ public class Cartas {
                         Double.parseDouble(velocidadeDeImpactoField.getText())
                 );
 
-                boolean sucesso = cartaDAO.criarCarta( c );
+                boolean sucesso = cartaDAO.criarCarta(c);
 
                 if (sucesso) {
-                    Alert alerta = new Alert( Alert.AlertType.CONFIRMATION );
-                    alerta.setTitle( "Carta criada com sucesso!" );
-                    alerta.setContentText( "A carta " + c.getNome() + " foi criada com SUCESSO!" );
+                    Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+                    alerta.setTitle("Carta criada com sucesso!");
+                    alerta.setContentText("A carta " + c.getNome() + " foi criada com SUCESSO!");
                     alerta.showAndWait();
 
                     ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
                     Colecao colecao = new Colecao();
-                    Stage novoStage = colecao.createStage( new Stage() );
+                    Stage novoStage = colecao.createStage(new Stage());
                     novoStage.show();
 
                 } else {
-                    Alert alerta = new Alert( Alert.AlertType.ERROR );
-                    alerta.setTitle( "Erro: Cadastro Duplicado" );
-                    alerta.setContentText( "A carta '" + c.getNome() + "' já existe. Não é permitido cadastro duplicado." );
+                    Alert alerta = new Alert(Alert.AlertType.ERROR);
+                    alerta.setTitle("Erro: Cadastro Duplicado");
+                    alerta.setContentText("A carta '" + c.getNome() + "' já existe. Não é permitido cadastro duplicado.");
                     alerta.showAndWait();
                 }
-            } catch ( NumberFormatException e ) {
-                Alert alerta = new Alert( Alert.AlertType.ERROR );
-                alerta.setTitle( "Erro de Preenchimento" );
-                alerta.setContentText( "Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios." );
+            } catch (NumberFormatException e) {
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Erro de Preenchimento");
+                alerta.setContentText("Verifique se todos os campos numéricos (Nível, Dano, Elixir, etc.) contêm apenas números válidos e não estão vazios.");
                 alerta.showAndWait();
 
-            } catch ( NullPointerException | IllegalArgumentException e ) {
-                Alert alerta = new Alert( Alert.AlertType.ERROR );
-                alerta.setTitle( "Erro de Seleção/Valor" );
-                alerta.setContentText( "Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos." );
+            } catch (NullPointerException | IllegalArgumentException e) {
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Erro de Seleção/Valor");
+                alerta.setContentText("Verifique se você selecionou um valor para todos os campos (Tipo, Raridade, Alvo) e se todos os campos estão preenchidos.");
                 alerta.showAndWait();
 
-            } catch ( Exception e ) {
-                Alert alerta = new Alert( Alert.AlertType.ERROR );
-                alerta.setTitle( "Erro Desconhecido" );
-                alerta.setContentText( "Ocorreu um erro inesperado: " + e.getMessage() );
+            } catch (Exception e) {
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Erro Desconhecido");
+                alerta.setContentText("Ocorreu um erro inesperado: " + e.getMessage());
                 alerta.showAndWait();
             }
-
         }
-
-    }
-    private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensagem);
-        alert.showAndWait();
     }
 }

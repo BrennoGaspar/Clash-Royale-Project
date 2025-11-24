@@ -18,7 +18,6 @@ public class AtualizarCarta {
 
     private Stage stage;
     private Carta cartaOriginal;
-    // VARIAVEIS "GLOBAIS"
     TextField nomeField;
     TextField nivelField;
     TextField custoElixirField;
@@ -202,7 +201,6 @@ public class AtualizarCarta {
             }
 
         }
-
 
     }
 

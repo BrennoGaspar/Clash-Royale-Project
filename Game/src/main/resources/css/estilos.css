@@ -40,3 +40,10 @@
     -fx-opacity: 0.9; /* Deixa o botão um pouco transparente para indicar interação */
     -fx-cursor: hand; /* Muda o cursor para uma mãozinha */
 }
+
+.background-app {
+    -fx-background-image: url('../images/clashBackGround.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}

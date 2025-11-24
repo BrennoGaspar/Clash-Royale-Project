@@ -55,7 +55,7 @@ public class TelaInicial extends Application {
     }
 
     private void abrirMenuPrincipal(ActionEvent event) {
-        MainMenu mainMenu = new MainMenu();
+        MainMenuScreen mainMenu = new MainMenuScreen();
         mainMenu.start(new Stage());
         primaryStage.close();
     }

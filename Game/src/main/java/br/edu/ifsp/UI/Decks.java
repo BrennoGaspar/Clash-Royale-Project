@@ -3,6 +3,7 @@ package br.edu.ifsp.UI;
 import br.edu.ifsp.data.CartaData;
 import br.edu.ifsp.data.DeckData;
 import br.edu.ifsp.main.Deck;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,7 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -38,44 +38,44 @@ public class Decks {
         this.deckDAO = new DeckData(this.cartaDAO);
 
         BorderPane root = new BorderPane();
-        root.setPrefSize( 1500, 700 );
+        root.setPrefSize(1500, 700);
 
-        // --- HEADER (Botões de Navegação) ---
+
+        //HEADER (Botões de Navegação)
         HBox header = new HBox( 300 );
-        Button decks = new Button( "Decks" ); // Botão da tela atual
+        Button decks = new Button( "Decks" );
 
-        // Botão de navegação para Criar Carta
         Button criarCarta = new Button( "Criar Carta" );
-        criarCarta.setOnAction( this::funcaoBotaoCarta );
+        criarCarta.setOnAction( this::funcaoBotaoCriarCarta );
 
-        // Botão de navegação para Coleção
-        Button colecao = new Button( "Coleção" );
-        colecao.setOnAction( this::funcaoBotaoColecao );
+        Button colecao = new Button( "Colecao" );
+        colecao.setOnAction( this::voltarParaColecao );
 
         header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
-        root.setTop(header);
 
-        // --- Botão de Ação Principal (Criar Novo Deck) ---
+        // --- Botão de Ação Principal (Separado da lista) ---
         Button btnNovoDeck = new Button("Criar Novo Deck");
         btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
 
-        VBox topActions = new VBox(10);
+        VBox topActions = new VBox(15);
         topActions.setAlignment(Pos.CENTER);
-        topActions.setPadding(new Insets(10, 20, 0, 20));
+        topActions.setPadding(new Insets(20, 20, 0, 20));
         topActions.getChildren().add(btnNovoDeck);
 
-        root.setTop(new VBox(header, topActions)); // Combina Header e botão principal
+        // Combina o Header de navegação e o botão principal no topo
+        VBox topContainer = new VBox(header, topActions);
+        root.setTop(topContainer);
 
-        // --- Lista de Decks (Centro) ---
-        VBox listaDecks = new VBox(15);
-        listaDecks.setPadding(new Insets(20));
+        //Lista de Decks (Centro)
+        VBox listaDecksSalvos = new VBox(15);
+        listaDecksSalvos.setPadding(new Insets(20));
 
-        ScrollPane scrollPane = new ScrollPane(listaDecks);
+        ScrollPane scrollPane = new ScrollPane(listaDecksSalvos);
         scrollPane.setFitToWidth(true);
         root.setCenter(scrollPane);
 
-        renderizarListaDecks(listaDecks);
+        renderizarListaDecks(listaDecksSalvos);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -86,7 +86,6 @@ public class Decks {
     public void exibir() {
         this.stage.show();
     }
-
 
     private void renderizarListaDecks(VBox listaDecks) {
         listaDecks.getChildren().clear();
@@ -101,7 +100,7 @@ public class Decks {
 
         for (Deck deck : decks) {
             HBox deckBox = new HBox(20);
-            deckBox.setAlignment(Pos.CENTER_LEFT);
+            deckBox.setAlignment(Pos.CENTER);
             deckBox.setPadding(new Insets(10));
             deckBox.setStyle("-fx-border-color: #333; -fx-border-width: 1px; -fx-background-color: #f4f4f4;");
 
@@ -134,22 +133,26 @@ public class Decks {
         criarDeck.getStage().setOnHidden(e -> renderizarListaDecks((VBox) ((ScrollPane) stage.getScene().getRoot()).getContent()));
     }
 
-    private void funcaoBotaoCarta(ActionEvent actionEvent) {
+    private void funcaoBotaoCriarCarta(ActionEvent actionEvent) {
         Cartas novaJanela = new Cartas();
         novaJanela.exibir();
         this.stage.close();
     }
 
-    private void funcaoBotaoColecao(ActionEvent actionEvent) {
+    private void voltarParaColecao(ActionEvent actionEvent) {
         Colecao colecao = new Colecao();
         Stage novoStage = colecao.createStage( new Stage() );
         novoStage.show();
         this.stage.close();
     }
 
+    // =========================================================================
+    // MÉTODOS DE DADOS
+    // =========================================================================
+
     private void abrirEdicaoDeck(Deck deck) {
         mostrarAlerta("Funcionalidade Pendente", "A edição de decks será implementada no próximo passo.", AlertType.INFORMATION);
-        // Próximo passo: Abrir CriarDeck(cartaDAO, deck)
+        // Próximo passo: Implementar a lógica de abrir a edição do deck
     }
 
     private void excluirDeck(Deck deck, VBox listaDecks) {
