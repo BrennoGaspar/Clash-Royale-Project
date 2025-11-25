@@ -38,7 +38,7 @@ public class CriarDeck {
         BorderPane root = new BorderPane();
         root.setPrefSize(1200, 700);
 
-        // --- 1. Lado Esquerdo: Coleção (Todas as Cartas Disponíveis) ---
+        //Lado esquerdo: todas as cartas disponiveis
         ScrollPane scrollPane = new ScrollPane(colecaoLista);
         scrollPane.setFitToWidth(true);
         scrollPane.setPrefWidth(300);
@@ -63,7 +63,7 @@ public class CriarDeck {
         root.setLeft(scrollPane);
         BorderPane.setMargin(scrollPane, new Insets(10));
 
-        // --- 2. Lado Direito/Central: Slots do Deck (As 8 Cartas) ---
+        // Lado direito: slots do deck
         VBox deckArea = new VBox(15);
         deckArea.setAlignment(Pos.TOP_CENTER);
         deckArea.setPrefWidth(400);
@@ -76,7 +76,7 @@ public class CriarDeck {
         root.setCenter(deckArea);
         BorderPane.setMargin(deckArea, new Insets(10));
 
-        // --- 3. Rodapé: Ação de Salvar ---
+        //Rodapé
         HBox footer = new HBox(10);
         footer.setAlignment(Pos.CENTER);
         Button salvarDeck = new Button("Salvar Novo Deck");
@@ -94,7 +94,7 @@ public class CriarDeck {
         renderizarDeck();
     }
 
-    // LÓGICA DE PERSISTÊNCIA E VALIDAÇÃO
+    //Validação do deck
     private void salvarDeck(ActionEvent event) {
         if (cartasDoDeck.size() != 8) {
             mostrarAlerta("Erro de Validação", "Um deck deve ter exatamente 8 cartas para ser salvo.", Alert.AlertType.ERROR);
@@ -117,7 +117,7 @@ public class CriarDeck {
         }
     }
 
-    // LÓGICA DE RENDERIZAÇÃO E MANIPULAÇÃO DA LISTA
+    //Lista de cartas e renderização
     private void renderizarDeck() {
         deckSlotsGrid.getChildren().clear();
         statusDeckLabel.setText("DECK ATUAL (" + cartasDoDeck.size() + "/8)");
@@ -126,8 +126,8 @@ public class CriarDeck {
             VBox slot = new VBox(5);
             slot.setAlignment(Pos.CENTER);
 
-            int row = i / 4;
-            int col = i % 4;
+            int linha = i / 4;
+            int coluna = i % 4;
 
             if (i < cartasDoDeck.size()) {
                 Carta carta = cartasDoDeck.get(i);
@@ -144,7 +144,7 @@ public class CriarDeck {
                 slot.setStyle("-fx-border-color: gray; -fx-padding: 5;");
             }
 
-            deckSlotsGrid.add(slot, col, row);
+            deckSlotsGrid.add(slot, coluna, linha);
         }
     }
 

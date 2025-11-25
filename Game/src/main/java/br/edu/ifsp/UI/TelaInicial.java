@@ -34,10 +34,10 @@ public class TelaInicial extends Application {
         titleImageView.setFitWidth(450);
         titleImageView.setPreserveRatio(true);
 
-        // Empurra para CIMA
+        // Empurra para cima
         titleImageView.setTranslateY(-250);
 
-        // Empurra para a DIREITA
+        // Empurra para a direita
         titleImageView.setTranslateX(10);
 
         root.getChildren().addAll(playButton, titleImageView);

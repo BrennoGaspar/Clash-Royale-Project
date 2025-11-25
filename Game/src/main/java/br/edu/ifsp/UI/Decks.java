@@ -28,7 +28,7 @@ public class Decks {
     private CartaData cartaDAO;
     private Stage stage;
 
-    // Construtor corrigido: Recebe a dependência CartaData
+    // Construtor não padrão: Recebe a dependência CartaData
     public Decks(CartaData cartaDAO) {
         this.cartaDAO = cartaDAO;
     }
@@ -41,7 +41,7 @@ public class Decks {
         root.setPrefSize(1500, 700);
 
 
-        //HEADER (Botões de Navegação)
+        //HEADER
         HBox header = new HBox( 300 );
         Button decks = new Button( "Decks" );
 
@@ -54,7 +54,7 @@ public class Decks {
         header.getChildren().addAll( decks, criarCarta, colecao );
         header.setAlignment( Pos.TOP_CENTER );
 
-        // --- Botão de Ação Principal (Separado da lista) ---
+        // Botão de ação
         Button btnNovoDeck = new Button("Criar Novo Deck");
         btnNovoDeck.setOnAction(e -> abrirCriacaoDeck());
 
@@ -63,11 +63,10 @@ public class Decks {
         topActions.setPadding(new Insets(20, 20, 0, 20));
         topActions.getChildren().add(btnNovoDeck);
 
-        // Combina o Header de navegação e o botão principal no topo
         VBox topContainer = new VBox(header, topActions);
         root.setTop(topContainer);
 
-        //Lista de Decks (Centro)
+        //Lista de decks
         VBox listaDecksSalvos = new VBox(15);
         listaDecksSalvos.setPadding(new Insets(20));
 
@@ -146,13 +145,9 @@ public class Decks {
         this.stage.close();
     }
 
-    // =========================================================================
-    // MÉTODOS DE DADOS
-    // =========================================================================
 
     private void abrirEdicaoDeck(Deck deck) {
-        mostrarAlerta("Funcionalidade Pendente", "A edição de decks será implementada no próximo passo.", AlertType.INFORMATION);
-        // Próximo passo: Implementar a lógica de abrir a edição do deck
+        mostrarAlerta("Em desenvolvimento", "A edição de decks será implementada na próxima atualização.", AlertType.INFORMATION);
     }
 
     private void excluirDeck(Deck deck, VBox listaDecks) {
