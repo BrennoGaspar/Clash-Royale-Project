@@ -31,7 +31,7 @@ public class Deck {
         for( Carta c : cartas ){
             custo += c.getCustoElixir();
         }
-        return custo / 8;
+        return custo / cartas.size();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Deck {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Deck deck = (Deck) o;
-        // A igualdade é definida APENAS pelo ID
+        // A igualdade é definida apenas pelo ID
         return id == deck.id;
     }
 

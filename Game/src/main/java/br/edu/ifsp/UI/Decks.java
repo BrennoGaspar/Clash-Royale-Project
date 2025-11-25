@@ -66,7 +66,7 @@ public class Decks {
         VBox topContainer = new VBox(header, topActions);
         root.setTop(topContainer);
 
-        //Lista de decks
+        // Lista de decks
         VBox listaDecksSalvos = new VBox(15);
         listaDecksSalvos.setPadding(new Insets(20));
 
@@ -78,7 +78,7 @@ public class Decks {
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Gerenciamento de Decks");
+        stage.setTitle(":: Decks ::");
         return stage;
     }
 
@@ -103,7 +103,7 @@ public class Decks {
             deckBox.setPadding(new Insets(10));
             deckBox.setStyle("-fx-border-color: #333; -fx-border-width: 1px; -fx-background-color: #f4f4f4;");
 
-            Label nomeDeck = new Label("Deck ID: " + deck.getId() + " - Média Elixir: " + String.format("%.1f", deck.getCustoMedio()));
+            Label nomeDeck = new Label("Deck ID: " + deck.getId() + " - Média Elixir: " + String.format("%.2f", deck.getCustoMedio()));
             nomeDeck.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
             HBox botoesAcao = new HBox(10);
@@ -147,7 +147,7 @@ public class Decks {
 
 
     private void abrirEdicaoDeck(Deck deck) {
-        mostrarAlerta("Em desenvolvimento", "A edição de decks será implementada na próxima atualização.", AlertType.INFORMATION);
+        mostrarAlerta("Em desenvolvimento", "A edição de decks será implementada na próxima atualização!", AlertType.INFORMATION);
     }
 
     private void excluirDeck(Deck deck, VBox listaDecks) {
