@@ -89,7 +89,7 @@ public class CriarDeck {
         Scene scene = new Scene(root);
         this.stage = new Stage();
         this.stage.setScene(scene);
-        this.stage.setTitle("Criar Novo Deck");
+        this.stage.setTitle(":: Criar Novo Deck ::");
 
         renderizarDeck();
     }

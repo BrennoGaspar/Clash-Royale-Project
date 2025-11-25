@@ -48,7 +48,7 @@ public class MainMenuScreen extends Application {
         scene.getStylesheets().add(cssPath);
 
         stage.setScene(scene);
-        stage.setTitle("Clash Royale - Menu Principal");
+        stage.setTitle(":: Clash Royale - Menu Principal ::");
         stage.show();
     }
 
