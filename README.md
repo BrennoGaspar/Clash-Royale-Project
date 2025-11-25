@@ -34,8 +34,8 @@ Este projeto é uma recriação simplificada do **Clash Royale**, desenvolvida i
 
 ## 🔧 Tecnologias Utilizadas
 
-* **Java 17+**
-* **JavaFX 19+**
+* **Java 25**
+* **JavaFX 22**
 
 ---
 
