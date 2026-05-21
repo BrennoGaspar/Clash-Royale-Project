@@ -47,7 +47,7 @@ Este projeto é uma recriação simplificada do **Clash Royale**, desenvolvida i
 **Coleção**
 <img width="1495" height="724" alt="image" src="https://github.com/user-attachments/assets/10621163-4511-4a26-bb9f-26aaf554624b" />
 
-**Detalhes das Cartas**
+**Detalhes das Cartas**<br>
 <img width="397" height="525" alt="image" src="https://github.com/user-attachments/assets/bc518d56-b615-40fb-bb34-989db2691456" />
 
 **Criação de Decks**
